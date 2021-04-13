@@ -1,9 +1,11 @@
 package saxo
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/imroc/req"
+	log "github.com/sirupsen/logrus"
 )
 
 type saxoClient struct {
@@ -30,6 +32,20 @@ func SetBearerToken(token string) {
 
 func GetClient() *saxoClient {
 	return client
+}
+
+func (saxoClient *saxoClient) DoRequest(method string, url string, body interface{}) (*req.Resp, error) {
+	log.Debug("Requesting", method, url)
+	fmt.Println(bearerToken)
+	authHeader := req.Header{
+		"Accept":        "application/json",
+		"Authorization": fmt.Sprintf("Bearer %s", bearerToken),
+	}
+
+	if body != nil {
+		return req.Do(method, url, authHeader, req.BodyJSON(body))
+	}
+	return req.Do(method, url, authHeader)
 }
 
 type AssetType string

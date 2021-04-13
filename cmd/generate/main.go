@@ -45,12 +45,6 @@ func main() {
 
 	err = os.Chdir(dir)
 	panicIfErr(err)
-	err = os.Chdir("go-saxo") // cd go-saxo
-	panicIfErr(err)
-	err = os.Mkdir("service-groups", 0777)
-	if !os.IsExist(err) {
-		panicIfErr(err)
-	}
 
 	// Template
 	funcs := template.FuncMap{
@@ -70,8 +64,6 @@ func main() {
 	// t, err := template.ParseFiles("templates/service.tmpl")
 	panicIfErr(err)
 
-	err = os.Chdir("service-groups") // cd service-groups
-	panicIfErr(err)
 
 	for _, serviceGroup := range saxoOpenAPI.Servicegroups {
 		fmt.Println(serviceGroup.Key, serviceGroup.Title)
@@ -126,6 +118,7 @@ func getFuncParameters(parameters []Parameter, key string, includeApiVersion boo
 	pp := []string{}
 	hasOptional := false
 
+	// Route parameters
 	for _, v := range parameters {
 		if v.Origin == "Route" {
 			pp = append(pp, strings.ToLower(fmt.Sprintf("%s string", v.Name)))
@@ -134,11 +127,12 @@ func getFuncParameters(parameters []Parameter, key string, includeApiVersion boo
 		}
 	}
 
+	// Query parameters
 	if hasOptional {
 		if includeApiVersion {
 			key += apiVersion
 		}
-		pp = append(pp, fmt.Sprintf("params %sParams", key))
+		pp = append(pp, fmt.Sprintf("params *%sParams", key))
 	}
 
 	return strings.Join(pp, ", ")
@@ -158,7 +152,7 @@ func isNonRoute(q string) bool {
 }
 
 func sanitize(str string) string {
-	return strings.Trim(str, "$")
+	return strings.Trim(strings.Trim(str, "$"), "*")
 }
 
 func saveResponseBodyStruct(docUrl string, EndpointKey string, serviceGroupKey string, filePath string) bool {

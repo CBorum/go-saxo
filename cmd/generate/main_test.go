@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"testing")
-
+	"testing"
+)
 
 func TestGgetResponseBodyStruct(t *testing.T) {
 	bb, err := getResponseBodyStruct("https://www.developer.saxo/openapi/referencedocs/ref/v1/algostrategies/getstrategybyname/f3195d507d54dd21c5504df61bf17863", "GetStrategyByName", "algostrategies")
@@ -12,7 +12,7 @@ func TestGgetResponseBodyStruct(t *testing.T) {
 	}
 	fmt.Println(string(bb))
 
-	if len(bb) <= 0 {
+	if len(bb) == 0 {
 		t.Fail()
 	}
 }
@@ -24,7 +24,7 @@ func TestGgetResponseBodyStruct2(t *testing.T) {
 	}
 	fmt.Println(string(bb))
 
-	if len(bb) <= 0 {
+	if len(bb) > 0 {
 		t.Fail()
 	}
 }
