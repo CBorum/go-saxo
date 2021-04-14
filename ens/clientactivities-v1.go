@@ -2,19 +2,16 @@
 package ens
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/ens/v1/clientactivities/addsubscriptionasync/0d98475e6ff38b2de76b66426008fd4a
 func AddSubscriptionAsync(params *AddSubscriptionAsyncParams) (*AddSubscriptionAsyncResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/ens/v1/activities/subscriptions", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/ens/v1/activities/subscriptions"
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &AddSubscriptionAsyncResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -34,24 +31,25 @@ type AddSubscriptionAsyncParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/ens/v1/clientactivities/deletesubscription/650d599c8e65c2fee9c3884ff66af1ba
 func DeleteSubscription(contextid string, referenceid string) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("DELETE", "https://gateway.saxobank.com/sim/openapi/ens/v1/activities/subscriptions/{ContextId}/{ReferenceId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/ens/v1/activities/subscriptions/{ContextId}/{ReferenceId}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ContextId}", contextid), saxo.RP("{ReferenceId}", referenceid))
+    resp, err := saxo.GetClient().DoRequest("DELETE", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 
 
 // https://www.developer.saxo/openapi/referencedocs/ens/v1/clientactivities/deletesubscriptions/b413ff7923a8fef648420ac76f1b1a86
 func DeleteSubscriptions(contextid string, params *DeleteSubscriptionsParams) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("DELETE", "https://gateway.saxobank.com/sim/openapi/ens/v1/activities/subscriptions/{ContextId}/?Tag={Tag}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/ens/v1/activities/subscriptions/{ContextId}/?Tag={Tag}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ContextId}", contextid))
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("DELETE", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 
@@ -62,12 +60,12 @@ type DeleteSubscriptionsParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/ens/v1/clientactivities/getactivitiesasync/873a0cb82bf75890b4929f38e2de2b6b
 func GetActivitiesAsync(params *GetActivitiesAsyncParams) (*GetActivitiesAsyncResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/ens/v1/activities/?$top={$top}&$skiptoken={$skiptoken}&OrderStatuses={OrderStatuses}&OrderTypes={OrderTypes}&Duration={Duration}&ExpirationDateTime={ExpirationDateTime}&ClientKey={ClientKey}&AccountKey={AccountKey}&AccountGroupKey={AccountGroupKey}&IncludeSubAccounts={IncludeSubAccounts}&FromDateTime={FromDateTime}&ToDateTime={ToDateTime}&Activities={Activities}&SequenceId={SequenceId}&FieldGroups={FieldGroups}&PositionEventFilter={PositionEventFilter}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/ens/v1/activities/?$top={$top}&$skiptoken={$skiptoken}&OrderStatuses={OrderStatuses}&OrderTypes={OrderTypes}&Duration={Duration}&ExpirationDateTime={ExpirationDateTime}&ClientKey={ClientKey}&AccountKey={AccountKey}&AccountGroupKey={AccountGroupKey}&IncludeSubAccounts={IncludeSubAccounts}&FromDateTime={FromDateTime}&ToDateTime={ToDateTime}&Activities={Activities}&SequenceId={SequenceId}&FieldGroups={FieldGroups}&PositionEventFilter={PositionEventFilter}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetActivitiesAsyncResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {

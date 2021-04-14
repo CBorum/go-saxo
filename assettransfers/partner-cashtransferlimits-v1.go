@@ -2,19 +2,17 @@
 package assettransfers
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/atr/v1/partner-cashtransferlimits/getcashtransferslimits/1fe73536a26078ae94af96a6fc33268d
 func GetCashTransfersLimits(params *GetCashTransfersLimitsParams) (*GetCashTransfersLimitsResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/atr/v1/partner/cashtransferlimits/?ClientKey={ClientKey}&AccountKey={AccountKey}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/atr/v1/partner/cashtransferlimits/?ClientKey={ClientKey}&AccountKey={AccountKey}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetCashTransfersLimitsResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {

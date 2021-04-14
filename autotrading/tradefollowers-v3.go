@@ -2,19 +2,16 @@
 package autotrading
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/at/v3/tradefollowers/gettradefollowers/2bdf75595f80d29308a1a78817af9555
 func GetTradeFollowers() (*GetTradeFollowersResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/at/v3/tradeFollowers/me", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/at/v3/tradeFollowers/me"
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetTradeFollowersResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -26,12 +23,12 @@ func GetTradeFollowers() (*GetTradeFollowersResponse, error) {
 
 // https://www.developer.saxo/openapi/referencedocs/at/v3/tradefollowers/getsuitabilitystatus/f29fd826000313674d43a8a8f957e646
 func GetSuitabilityStatus(clientkey string) (*GetSuitabilityStatusResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/at/v3/tradeFollowers/{ClientKey}/suitabilitystatus", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/at/v3/tradeFollowers/{ClientKey}/suitabilitystatus"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetSuitabilityStatusResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -43,12 +40,12 @@ func GetSuitabilityStatus(clientkey string) (*GetSuitabilityStatusResponse, erro
 
 // https://www.developer.saxo/openapi/referencedocs/at/v3/tradefollowers/putsuitabilitystatus/1cca3a2182825335b94faaa1b204d2eb
 func PutSuitabilityStatus(clientkey string, params *PutSuitabilityStatusParams) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("PUT", "https://gateway.saxobank.com/sim/openapi/at/v3/tradeFollowers/{ClientKey}/suitabilitystatus", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/at/v3/tradeFollowers/{ClientKey}/suitabilitystatus"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
+    resp, err := saxo.GetClient().DoRequest("PUT", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 
@@ -60,12 +57,12 @@ type PutSuitabilityStatusParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/at/v3/tradefollowers/gettermsandconditions/1619ace40f6c5400134a4f37c50021a1
 func GetTermsAndConditions(clientkey string) (*GetTermsAndConditionsResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/at/v3/tradeFollowers/{ClientKey}/termsandconditions", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/at/v3/tradeFollowers/{ClientKey}/termsandconditions"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetTermsAndConditionsResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -77,12 +74,12 @@ func GetTermsAndConditions(clientkey string) (*GetTermsAndConditionsResponse, er
 
 // https://www.developer.saxo/openapi/referencedocs/at/v3/tradefollowers/putclienttermsandconditions/27384a61ee7bb1390a138982f909ab54
 func PutClientTermsAndConditions(clientkey string, params *PutClientTermsAndConditionsParams) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("PUT", "https://gateway.saxobank.com/sim/openapi/at/v3/tradeFollowers/{ClientKey}/termsandconditions", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/at/v3/tradeFollowers/{ClientKey}/termsandconditions"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
+    resp, err := saxo.GetClient().DoRequest("PUT", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 

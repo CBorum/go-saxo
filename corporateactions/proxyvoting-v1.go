@@ -2,19 +2,17 @@
 package corporateactions
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/ca/v1/proxyvoting/getproxyvotingeventsasync/fa0a55afb94926ed3fc7d756c07f8fa8
 func GetProxyVotingEventsAsync(params *GetProxyVotingEventsAsyncParams) (*GetProxyVotingEventsAsyncResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/ca/v1/proxyvoting/events/?$top={$top}&$skip={$skip}&ClientKey={ClientKey}&SortType={SortType}&SortColumn={SortColumn}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/ca/v1/proxyvoting/events/?$top={$top}&$skip={$skip}&ClientKey={ClientKey}&SortType={SortType}&SortColumn={SortColumn}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetProxyVotingEventsAsyncResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {

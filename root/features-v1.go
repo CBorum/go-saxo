@@ -2,19 +2,16 @@
 package root
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/root/v1/features/get/fa6ff69b66f9071d69d9e5088f26236c
 func GetFeatures() (*GetFeaturesResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/root/v1/features/availability", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/root/v1/features/availability"
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetFeaturesResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -26,12 +23,11 @@ func GetFeatures() (*GetFeaturesResponse, error) {
 
 // https://www.developer.saxo/openapi/referencedocs/root/v1/features/post/0f4a768cafca2fd5073757fade0a35d6
 func PostFeatures(params *PostFeaturesParams) (*PostFeaturesResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/root/v1/features/availability/subscriptions", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/root/v1/features/availability/subscriptions"
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &PostFeaturesResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -50,12 +46,12 @@ type PostFeaturesParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/root/v1/features/delete/91bcb26e5d95cf6ef1738f2736d2fb29
 func DeleteFeatures(contextid string, referenceid string) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("DELETE", "https://gateway.saxobank.com/sim/openapi/root/v1/features/availability/subscriptions/{ContextId}/{ReferenceId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/root/v1/features/availability/subscriptions/{ContextId}/{ReferenceId}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ContextId}", contextid), saxo.RP("{ReferenceId}", referenceid))
+    resp, err := saxo.GetClient().DoRequest("DELETE", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 

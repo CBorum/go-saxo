@@ -2,19 +2,17 @@
 package valueadd
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/vas/v1/pricealerts/getallalertdefinitionsfilteredbystate/253503f194504d7e4192a9871c1ccef5
 func GetAllAlertDefinitionsFilteredByState(params *GetAllAlertDefinitionsFilteredByStateParams) (*GetAllAlertDefinitionsFilteredByStateResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/vas/v1/pricealerts/definitions/?$top={$top}&$skip={$skip}&$inlinecount={$inlinecount}&State={State}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/vas/v1/pricealerts/definitions/?$top={$top}&$skip={$skip}&$inlinecount={$inlinecount}&State={State}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetAllAlertDefinitionsFilteredByStateResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -32,12 +30,12 @@ type GetAllAlertDefinitionsFilteredByStateParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/vas/v1/pricealerts/getalertdefinition/2c8074078cc31b722a030eb5dcc36acc
 func GetAlertDefinition(alertdefinitionid string) (*GetAlertDefinitionResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/vas/v1/pricealerts/definitions/{AlertDefinitionId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/vas/v1/pricealerts/definitions/{AlertDefinitionId}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{AlertDefinitionId}", alertdefinitionid))
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetAlertDefinitionResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -49,12 +47,11 @@ func GetAlertDefinition(alertdefinitionid string) (*GetAlertDefinitionResponse, 
 
 // https://www.developer.saxo/openapi/referencedocs/vas/v1/pricealerts/postalertdefinition/142c917d7073729471c019c8b14a032e
 func PostAlertDefinition(params *PostAlertDefinitionParams) (*PostAlertDefinitionResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/vas/v1/pricealerts/definitions", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/vas/v1/pricealerts/definitions"
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &PostAlertDefinitionResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -78,12 +75,12 @@ type PostAlertDefinitionParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/vas/v1/pricealerts/putalertdefinition/5e45019d26e97ad5e7e5ec17f107982b
 func PutAlertDefinition(alertdefinitionid string, params *PutAlertDefinitionParams) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("PUT", "https://gateway.saxobank.com/sim/openapi/vas/v1/pricealerts/definitions/{AlertDefinitionId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/vas/v1/pricealerts/definitions/{AlertDefinitionId}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{AlertDefinitionId}", alertdefinitionid))
+    resp, err := saxo.GetClient().DoRequest("PUT", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 
@@ -103,24 +100,23 @@ type PutAlertDefinitionParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/vas/v1/pricealerts/deletealertdefinitions/a50b7d0acffbb7c9a097a699b2749f98
 func DeleteAlertDefinitions(alertdefinitionids string) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("DELETE", "https://gateway.saxobank.com/sim/openapi/vas/v1/pricealerts/definitions/{AlertDefinitionIds}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/vas/v1/pricealerts/definitions/{AlertDefinitionIds}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{AlertDefinitionIds}", alertdefinitionids))
+    resp, err := saxo.GetClient().DoRequest("DELETE", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 
 
 // https://www.developer.saxo/openapi/referencedocs/vas/v1/pricealerts/getusersettings/d7921c39174807f5c5b8dd52c8423a30
 func GetUserSettings() (*GetUserSettingsResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/vas/v1/pricealerts/usersettings", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/vas/v1/pricealerts/usersettings"
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetUserSettingsResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -132,12 +128,11 @@ func GetUserSettings() (*GetUserSettingsResponse, error) {
 
 // https://www.developer.saxo/openapi/referencedocs/vas/v1/pricealerts/putusersettings/5f7047f70b89de00498121d47eae614b
 func PutUserSettings(params *PutUserSettingsParams) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("PUT", "https://gateway.saxobank.com/sim/openapi/vas/v1/pricealerts/usersettings", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/vas/v1/pricealerts/usersettings"
+    resp, err := saxo.GetClient().DoRequest("PUT", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 

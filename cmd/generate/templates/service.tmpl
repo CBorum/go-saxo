@@ -2,8 +2,6 @@
 package {{ .ServiceGroupName }}
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 {{ $DocsBaseUrl := .DocsBaseUrl -}}
@@ -13,12 +11,17 @@ import (
 {{ range .SaxoData.Endpoints }}
 {{ printf "%s %s%s" "//" $DocsBaseUrl .Refdocsurl }}{{ $responseType := (getResponseType .Key $ServiceGroupName) }}
 func {{ .Key }}{{if $includeApiVersion}}{{ $apiVersion }}{{ end }}({{ getFuncParameters .Parameters .Key $includeApiVersion $apiVersion -}}) ({{ $responseType }}, error) {
-    resp, err := saxo.GetClient().DoRequest("{{ .Httpmethod }}", "{{ .URL }}", nil) {{/* TODO sub query params, do json body */}}
+    url := "{{ .URL }}"
+    {{- if hasRouteParams .Parameters }}
+    url = saxo.PrepareUrlRoute(url, {{ getRouteParams .Parameters }})
+    {{- end }}
+    {{- if hasQueryParams .Parameters }}
+    url = saxo.PrepareUrlParams(url, params)
+    {{- end }}
+    resp, err := saxo.GetClient().DoRequest("{{ .Httpmethod }}", url, nil) {{/* TODO sub query params, do json body */}}
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
 
     {{- if hasResponseType .Key $ServiceGroupName }}
     respJson := &{{ sanitize $responseType }}{}

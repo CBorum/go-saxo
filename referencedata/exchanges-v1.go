@@ -2,19 +2,17 @@
 package referencedata
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/ref/v1/exchanges/getallexchanges/ad46a2d6611b9194c5fa84d21287dc7f
 func GetAllExchanges(params *GetAllExchangesParams) (*GetAllExchangesResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/ref/v1/exchanges/?$top={$top}&$skip={$skip}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/ref/v1/exchanges/?$top={$top}&$skip={$skip}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetAllExchangesResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -30,12 +28,12 @@ type GetAllExchangesParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/ref/v1/exchanges/getexchange/3a329c212a4fbd2320f582aa50d1b772
 func GetExchange(exchangeid string) (*GetExchangeResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/ref/v1/exchanges/{ExchangeId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/ref/v1/exchanges/{ExchangeId}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ExchangeId}", exchangeid))
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetExchangeResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {

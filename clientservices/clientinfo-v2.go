@@ -2,19 +2,17 @@
 package clientservices
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/cs/v2/clientinfo/search/751324b669928ae0a4dbc8c28c003d03
 func Search(params *SearchParams) (*SearchResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/cs/v2/clientinfo/clients/search/?$top={$top}&$skip={$skip}&$inlinecount={$inlinecount}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cs/v2/clientinfo/clients/search/?$top={$top}&$skip={$skip}&$inlinecount={$inlinecount}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &SearchResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {

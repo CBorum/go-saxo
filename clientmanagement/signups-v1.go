@@ -2,19 +2,18 @@
 package clientmanagement
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/cm/v1/signups/attachfile/d4080612eac8c8aa989c8b2cd0cefe11
 func AttachFilev1(signupid string, params *AttachFilev1Params) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/attachments/{SignUpId}/?RenewalDate={RenewalDate}&DocumentType={DocumentType}&Title={Title}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/attachments/{SignUpId}/?RenewalDate={RenewalDate}&DocumentType={DocumentType}&Title={Title}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{SignUpId}", signupid))
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 
@@ -27,12 +26,11 @@ type AttachFilev1Params struct {
 
 // https://www.developer.saxo/openapi/referencedocs/cm/v1/signups/getsignupoptions/11227f361d27279ec9b7ce63abe47ecb
 func GetSignupOptionsv1() (*GetSignupOptionsResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/options", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/options"
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetSignupOptionsResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -44,12 +42,12 @@ func GetSignupOptionsv1() (*GetSignupOptionsResponse, error) {
 
 // https://www.developer.saxo/openapi/referencedocs/cm/v1/signups/signup/e6279475c6da5c61867904c574531d2a
 func SignUpv1(params *SignUpv1Params) (*SignUpResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/?OwnerKey={OwnerKey}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/?OwnerKey={OwnerKey}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &SignUpResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -75,12 +73,12 @@ type SignUpv1Params struct {
 
 // https://www.developer.saxo/openapi/referencedocs/cm/v1/signups/getsignupstatus/41a070d0384723da2145a39ccd0bf9e0
 func GetSignUpStatusv1(clientkey string) (*GetSignUpStatusResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/status/{ClientKey}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/status/{ClientKey}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetSignUpStatusResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -92,12 +90,13 @@ func GetSignUpStatusv1(clientkey string) (*GetSignUpStatusResponse, error) {
 
 // https://www.developer.saxo/openapi/referencedocs/cm/v1/signups/completeapplication/177fa8affca7cd529d28c888c697a5f4
 func CompleteApplicationv1(signupid string, params *CompleteApplicationv1Params) (*CompleteApplicationResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("PUT", "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/completeapplication/{SignUpId}/?AwaitAccountCreation={AwaitAccountCreation}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/completeapplication/{SignUpId}/?AwaitAccountCreation={AwaitAccountCreation}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{SignUpId}", signupid))
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("PUT", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &CompleteApplicationResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -113,12 +112,12 @@ type CompleteApplicationv1Params struct {
 
 // https://www.developer.saxo/openapi/referencedocs/cm/v1/signups/initiateverification/d19dc3a3d9ad7f366ae2f3f7583c6b99
 func InitiateVerificationv1(clientkey string, params *InitiateVerificationv1Params) (*InitiateVerificationResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/verification/initiate/{ClientKey}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/verification/initiate/{ClientKey}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &InitiateVerificationResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -134,12 +133,13 @@ type InitiateVerificationv1Params struct {
 
 // https://www.developer.saxo/openapi/referencedocs/cm/v1/signups/generatetypedonboardingpdf/6089ca2f4ae3a1af2d02c693b75ce1c9
 func GenerateTypedOnboardingPDFv1(clientkey string, params *GenerateTypedOnboardingPDFv1Params) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/onboardingpdf/{ClientKey}/?DocumentType={DocumentType}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/onboardingpdf/{ClientKey}/?DocumentType={DocumentType}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 

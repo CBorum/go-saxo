@@ -2,19 +2,17 @@
 package clientservices
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/cs/v1/audit-orderactivities/getorderstatesasync/88396c9accc21e373925b5cd2ce134dd
 func GetOrderStatesAsync(params *GetOrderStatesAsyncParams) (*GetOrderStatesAsyncResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/cs/v1/audit/orderactivities/?$top={$top}&$skiptoken={$skiptoken}&FieldGroups={FieldGroups}&Status={Status}&ClientKey={ClientKey}&AccountKey={AccountKey}&OrderId={OrderId}&EntryType={EntryType}&FromDateTime={FromDateTime}&ToDateTime={ToDateTime}&CorrelationKey={CorrelationKey}&IncludeSubAccounts={IncludeSubAccounts}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cs/v1/audit/orderactivities/?$top={$top}&$skiptoken={$skiptoken}&FieldGroups={FieldGroups}&Status={Status}&ClientKey={ClientKey}&AccountKey={AccountKey}&OrderId={OrderId}&EntryType={EntryType}&FromDateTime={FromDateTime}&ToDateTime={ToDateTime}&CorrelationKey={CorrelationKey}&IncludeSubAccounts={IncludeSubAccounts}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetOrderStatesAsyncResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {

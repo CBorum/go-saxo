@@ -2,19 +2,18 @@
 package clientservices
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/cs/v1/tradingconditions-cost/gettradingconditioncost/665e2b2d64ea678fbf102d40fd82a3ec
 func GetTradingConditionCost(accountkey string, assettype string, uic string, params *GetTradingConditionCostParams) (*GetTradingConditionCostResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/cs/v1/tradingconditions/cost/{AccountKey}/{Uic}/{AssetType}/?Amount={Amount}&FieldGroups={FieldGroups}&Price={Price}&HoldingPeriodInDays={HoldingPeriodInDays}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cs/v1/tradingconditions/cost/{AccountKey}/{Uic}/{AssetType}/?Amount={Amount}&FieldGroups={FieldGroups}&Price={Price}&HoldingPeriodInDays={HoldingPeriodInDays}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{AccountKey}", accountkey), saxo.RP("{AssetType}", assettype), saxo.RP("{Uic}", uic))
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetTradingConditionCostResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {

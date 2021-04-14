@@ -2,19 +2,16 @@
 package assettransfers
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/atr/v1/securitiestransfers/transfer/cf6e251363afbbbe5660acfb9c847bc6
 func Transfer(params *TransferParams) (*TransferResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/atr/v1/securitiestransfers/transfers", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/atr/v1/securitiestransfers/transfers"
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &TransferResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -38,12 +35,12 @@ type TransferParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/atr/v1/securitiestransfers/getbrokers/22b7d795c89eb4fa20b06f525a6d58a4
 func GetBrokers(params *GetBrokersParams) (*GetBrokersResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/atr/v1/securitiestransfers/brokers/?CountryCode={CountryCode}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/atr/v1/securitiestransfers/brokers/?CountryCode={CountryCode}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetBrokersResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -58,12 +55,12 @@ type GetBrokersParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/atr/v1/securitiestransfers/gettransferdetails/5961f7c694770ea83d4190909e1c4c89
 func GetTransferDetails(params *GetTransferDetailsParams) (*GetTransferDetailsResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/atr/v1/securitiestransfers/transfers/?TransferIds={TransferIds}&ClientKey={ClientKey}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/atr/v1/securitiestransfers/transfers/?TransferIds={TransferIds}&ClientKey={ClientKey}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetTransferDetailsResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {

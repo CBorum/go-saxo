@@ -2,19 +2,16 @@
 package assettransfers
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/atr/v1/partner-cashtransfer/cashtransfer/cddc7ce8c4e6757f9f64566a46ccdbb1
 func CashTransfer(params *CashTransferParams) (*CashTransferResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/atr/v1/partner/cashtransfers", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/atr/v1/partner/cashtransfers"
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &CashTransferResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -36,12 +33,12 @@ type CashTransferParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/atr/v1/partner-cashtransfer/cashtransfersbyid/5de341702cf93764cccd447c07d4f55a
 func CashTransfersById(transactionid string) (*CashTransfersByIdResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/atr/v1/partner/cashtransfers/{TransactionId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/atr/v1/partner/cashtransfers/{TransactionId}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{TransactionId}", transactionid))
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &CashTransfersByIdResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -53,12 +50,12 @@ func CashTransfersById(transactionid string) (*CashTransfersByIdResponse, error)
 
 // https://www.developer.saxo/openapi/referencedocs/atr/v1/partner-cashtransfer/cashtransfersbysearchparameters/49eb5f4687599a6494ab2cd51edeb7d2
 func CashTransfersBySearchParameters(params *CashTransfersBySearchParametersParams) (*CashTransfersBySearchParametersResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/atr/v1/partner/cashtransfers/?AccountKey={AccountKey}&ClientKey={ClientKey}&FromDateTime={FromDateTime}&ToDateTime={ToDateTime}&ExternalReference={ExternalReference}&Top={Top}&SkipToken={SkipToken}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/atr/v1/partner/cashtransfers/?AccountKey={AccountKey}&ClientKey={ClientKey}&FromDateTime={FromDateTime}&ToDateTime={ToDateTime}&ExternalReference={ExternalReference}&Top={Top}&SkipToken={SkipToken}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &CashTransfersBySearchParametersResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {

@@ -2,19 +2,18 @@
 package clientservices
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/cs/v1/historicalreportdata-aggregatedamounts/get/3962da8f9c349b9c3646548a669c169e
 func GetAggregatedAmounts(clientkey string, fromdate string, todate string, params *GetAggregatedAmountsParams) (*GetAggregatedAmountsResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/cs/v1/reports/aggregatedAmounts/{ClientKey}/{FromDate}/{ToDate}/?$top={$top}&$skip={$skip}&$skiptoken={$skiptoken}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}&MockDataId={MockDataId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cs/v1/reports/aggregatedAmounts/{ClientKey}/{FromDate}/{ToDate}/?$top={$top}&$skip={$skip}&$skiptoken={$skiptoken}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}&MockDataId={MockDataId}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey), saxo.RP("{FromDate}", fromdate), saxo.RP("{ToDate}", todate))
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetAggregatedAmountsResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {

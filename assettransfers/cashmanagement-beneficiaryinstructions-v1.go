@@ -2,19 +2,17 @@
 package assettransfers
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/atr/v1/cashmanagement-beneficiaryinstructions/getbeneficiaryinstructionsasync/d1fada87658f83fb9ea6772312cf4b13
 func GetBeneficiaryInstructionsAsync(params *GetBeneficiaryInstructionsAsyncParams) (*GetBeneficiaryInstructionsAsyncResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/atr/v1/cashmanagement/beneficiaryinstructions/?ClientKey={ClientKey}&Currency={Currency}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/atr/v1/cashmanagement/beneficiaryinstructions/?ClientKey={ClientKey}&Currency={Currency}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetBeneficiaryInstructionsAsyncResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {

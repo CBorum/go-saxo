@@ -2,19 +2,17 @@
 package clientservices
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/cs/v1/support-cases/getcases/9917b4984825a55600d2dc51547fd49e
 func GetCases(params *GetCasesParams) (*GetCasesResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/cs/v1/partner/support/cases/?$top={$top}&Status={Status}&FromDateTime={FromDateTime}&ToDateTime={ToDateTime}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cs/v1/partner/support/cases/?$top={$top}&Status={Status}&FromDateTime={FromDateTime}&ToDateTime={ToDateTime}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetCasesResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -32,12 +30,12 @@ type GetCasesParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/cs/v1/support-cases/getcase/9cdeebac8805cd2800e1fd7373882475
 func GetCase(caseid string) (*GetCaseResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/cs/v1/partner/support/cases/{CaseId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cs/v1/partner/support/cases/{CaseId}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{CaseId}", caseid))
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetCaseResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -49,12 +47,12 @@ func GetCase(caseid string) (*GetCaseResponse, error) {
 
 // https://www.developer.saxo/openapi/referencedocs/cs/v1/support-cases/closecase/166b34c2550c6861c293992c841cdef5
 func CloseCase(caseid string, params *CloseCaseParams) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("PUT", "https://gateway.saxobank.com/sim/openapi/cs/v1/partner/support/cases/{CaseId}/caseclose", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cs/v1/partner/support/cases/{CaseId}/caseclose"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{CaseId}", caseid))
+    resp, err := saxo.GetClient().DoRequest("PUT", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 
@@ -65,12 +63,12 @@ type CloseCaseParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/cs/v1/support-cases/createinternalcomment/74219517f6b3255e6dc59e91ecc4a456
 func CreateInternalComment(caseid string, params *CreateInternalCommentParams) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/cs/v1/partner/support/cases/{CaseId}/internalcomment", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cs/v1/partner/support/cases/{CaseId}/internalcomment"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{CaseId}", caseid))
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 
@@ -81,12 +79,12 @@ type CreateInternalCommentParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/cs/v1/support-cases/createnote/286e1f8e48dce194d7f3207edaa7b0ac
 func CreateNote(caseid string, params *CreateNoteParams) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/cs/v1/partner/support/cases/{CaseId}/note", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cs/v1/partner/support/cases/{CaseId}/note"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{CaseId}", caseid))
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 
@@ -99,12 +97,12 @@ type CreateNoteParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/cs/v1/support-cases/updatenote/81ae6f1a1f9abdc0e39ca03adabc6dbd
 func UpdateNote(caseid string, params *UpdateNoteParams) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("PATCH", "https://gateway.saxobank.com/sim/openapi/cs/v1/partner/support/cases/{CaseId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cs/v1/partner/support/cases/{CaseId}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{CaseId}", caseid))
+    resp, err := saxo.GetClient().DoRequest("PATCH", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 
@@ -122,12 +120,11 @@ type UpdateNoteParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/cs/v1/support-cases/createcase/136ad3589446a4b858a0d3f0c57c072e
 func CreateCase(params *CreateCaseParams) (*CreateCaseResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/cs/v1/partner/support/cases", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cs/v1/partner/support/cases"
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &CreateCaseResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {

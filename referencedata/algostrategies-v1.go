@@ -2,19 +2,17 @@
 package referencedata
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/ref/v1/algostrategies/getallstrategies/fce5d6b477a3e4d2a1d83e609f02d24f
 func GetAllStrategies(params *GetAllStrategiesParams) (*GetAllStrategiesResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/ref/v1/algostrategies/?$top={$top}&$skip={$skip}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/ref/v1/algostrategies/?$top={$top}&$skip={$skip}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetAllStrategiesResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -30,12 +28,12 @@ type GetAllStrategiesParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/ref/v1/algostrategies/getstrategybyname/f3195d507d54dd21c5504df61bf17863
 func GetStrategyByName(name string) (*GetStrategyByNameResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/ref/v1/algostrategies/{Name}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/ref/v1/algostrategies/{Name}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{Name}", name))
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetStrategyByNameResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {

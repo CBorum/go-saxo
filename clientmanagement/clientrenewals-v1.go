@@ -2,19 +2,17 @@
 package clientmanagement
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/cm/v1/clientrenewals/getclientrenewaldata/3ecfec627627fcb34854c255b76c8214
 func GetClientRenewalData(params *GetClientRenewalDataParams) (*GetClientRenewalDataResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/cm/v1/clientrenewals/?ClientKey={ClientKey}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cm/v1/clientrenewals/?ClientKey={ClientKey}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetClientRenewalDataResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -29,12 +27,12 @@ type GetClientRenewalDataParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/cm/v1/clientrenewals/updateclientrenewaldata/3f4f8cd016fcbdcd1b39d14c009bec06
 func UpdateClientRenewalData(renewalentityid string, params *UpdateClientRenewalDataParams) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("PATCH", "https://gateway.saxobank.com/sim/openapi/cm/v1/clientrenewals/{RenewalEntityId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cm/v1/clientrenewals/{RenewalEntityId}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{RenewalEntityId}", renewalentityid))
+    resp, err := saxo.GetClient().DoRequest("PATCH", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 
@@ -47,12 +45,12 @@ type UpdateClientRenewalDataParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/cm/v1/clientrenewals/getrenewalstatuses/d5820d08a797c7eccacfdb1ee80fd442
 func GetRenewalStatuses(params *GetRenewalStatusesParams) (*GetRenewalStatusesResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/cm/v1/clientrenewals/pending/?$top={$top}&$skip={$skip}&OwnerKey={OwnerKey}&MustRenewBy={MustRenewBy}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cm/v1/clientrenewals/pending/?$top={$top}&$skip={$skip}&OwnerKey={OwnerKey}&MustRenewBy={MustRenewBy}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetRenewalStatusesResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {

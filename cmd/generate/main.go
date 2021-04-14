@@ -57,13 +57,15 @@ func main() {
 		"getParamType":          getParamType,
 		"getResponseType":       getResponseType,
 		"hasResponseType":       hasResponseType,
+		"hasQueryParams":        hasQueryParams,
+		"hasRouteParams":        hasRouteParams,
+		"getRouteParams":        getRouteParams,
 	}
 	templateFile, err := os.ReadFile("cmd/generate/templates/service.tmpl")
 	panicIfErr(err)
 	t, err := template.New("service").Funcs(funcs).Parse(string(templateFile))
 	// t, err := template.ParseFiles("templates/service.tmpl")
 	panicIfErr(err)
-
 
 	for _, serviceGroup := range saxoOpenAPI.Servicegroups {
 		fmt.Println(serviceGroup.Key, serviceGroup.Title)
@@ -184,14 +186,12 @@ func getResponseBodyStruct(docUrl string, EndpointKey string, serviceGroupKey st
 
 	node, ok := scrape.Find(root, matcher)
 	if !ok {
-		fmt.Println("Response body not found")
-		return nil, errors.New("not found")
+		return nil, errors.New("response body element not found")
 	}
 
 	node, ok = scrape.Find(node.Parent, scrape.ByTag(atom.Pre))
 	if !ok {
-		fmt.Println("Response body not found")
-		return nil, errors.New("not found")
+		return nil, errors.New("response body json not found")
 	}
 
 	structBytes := jsonToStruct(scrape.Text(node), EndpointKey+"Response", serviceGroupKey)
@@ -242,6 +242,34 @@ func hasResponseType(endpointKey string, serviceGroupKey string) bool {
 	} else {
 		return true
 	}
+}
+
+func hasQueryParams(params []Parameter) bool {
+	for _, v := range params {
+		if v.Origin == "Query-String" {
+			return true
+		}
+	}
+	return false
+}
+
+func hasRouteParams(params []Parameter) bool {
+	for _, v := range params {
+		if v.Origin == "Route" {
+			return true
+		}
+	}
+	return false
+}
+
+func getRouteParams(params []Parameter) string {
+	ss := []string{}
+	for _, v := range params {
+		if v.Origin == "Route" {
+			ss = append(ss, fmt.Sprintf("saxo.RP(\"{%s}\", %s)", v.Name, strings.ToLower(v.Name)))
+		}
+	}
+	return strings.Join(ss, ", ")
 }
 
 type TemplateData struct {

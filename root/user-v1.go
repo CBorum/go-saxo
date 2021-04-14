@@ -2,19 +2,16 @@
 package root
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/root/v1/user/userinfo/a5a7f20c716323d335335dee22b637e7
 func UserInfo() (*UserInfoResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/root/v1/user", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/root/v1/user"
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &UserInfoResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {

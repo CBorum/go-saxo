@@ -2,19 +2,16 @@
 package trading
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/trade/v2/orders/placeorder/33c53d35579766ba5243c8b5dd246e1a
 func PlaceOrder(params *PlaceOrderParams) (*PlaceOrderResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/trade/v2/orders", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/trade/v2/orders"
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &PlaceOrderResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -57,12 +54,11 @@ type PlaceOrderParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/trade/v2/orders/changeorder/08fb9ab64437857d43a7b523e5149354
 func ChangeOrder(params *ChangeOrderParams) (*ChangeOrderResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("PATCH", "https://gateway.saxobank.com/sim/openapi/trade/v2/orders", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/trade/v2/orders"
+    resp, err := saxo.GetClient().DoRequest("PATCH", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &ChangeOrderResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -90,12 +86,13 @@ type ChangeOrderParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/trade/v2/orders/cancelorder/a1fd2fffa62f21901f23318f65fe8147
 func CancelOrder(orderids string, params *CancelOrderParams) (*CancelOrderResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("DELETE", "https://gateway.saxobank.com/sim/openapi/trade/v2/orders/{OrderIds}/?AccountKey={AccountKey}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/trade/v2/orders/{OrderIds}/?AccountKey={AccountKey}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{OrderIds}", orderids))
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("DELETE", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &CancelOrderResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -111,12 +108,12 @@ type CancelOrderParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/trade/v2/orders/cancelallorder/261fb62628b4c2cc9278b170429c16fb
 func CancelAllOrder(params *CancelAllOrderParams) (*CancelAllOrderResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("DELETE", "https://gateway.saxobank.com/sim/openapi/trade/v2/orders/?AccountKey={AccountKey}&AssetType={AssetType}&Uic={Uic}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/trade/v2/orders/?AccountKey={AccountKey}&AssetType={AssetType}&Uic={Uic}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("DELETE", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &CancelAllOrderResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -133,12 +130,11 @@ type CancelAllOrderParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/trade/v2/orders/precheckorder/a6278b748802edbefb73e5ccf9b30673
 func PreCheckOrder(params *PreCheckOrderParams) (*PreCheckOrderResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/trade/v2/orders/precheck", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/trade/v2/orders/precheck"
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &PreCheckOrderResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -172,12 +168,11 @@ type PreCheckOrderParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/trade/v2/orders/precheckmultilegorder/2495fa5bb96132fc94c912f4ebfa0d9d
 func PreCheckMultilegOrder(params *PreCheckMultilegOrderParams) (*PreCheckMultilegOrderResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/trade/v2/orders/multileg/precheck", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/trade/v2/orders/multileg/precheck"
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &PreCheckMultilegOrderResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -200,12 +195,11 @@ type PreCheckMultilegOrderParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/trade/v2/orders/placemultilegstrategyorder/9a0a66f71c51c3320dd7baafdd179c25
 func PlaceMultiLegStrategyOrder(params *PlaceMultiLegStrategyOrderParams) (*PlaceMultiLegStrategyOrderResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/trade/v2/orders/multileg", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/trade/v2/orders/multileg"
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &PlaceMultiLegStrategyOrderResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -227,12 +221,11 @@ type PlaceMultiLegStrategyOrderParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/trade/v2/orders/changemultilegstrategyorder/bcf9478928c21dd91e6ac1c44488a8af
 func ChangeMultiLegStrategyOrder(params *ChangeMultiLegStrategyOrderParams) (*ChangeMultiLegStrategyOrderResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("PATCH", "https://gateway.saxobank.com/sim/openapi/trade/v2/orders/multileg", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/trade/v2/orders/multileg"
+    resp, err := saxo.GetClient().DoRequest("PATCH", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &ChangeMultiLegStrategyOrderResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -251,12 +244,13 @@ type ChangeMultiLegStrategyOrderParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/trade/v2/orders/cancelmultilegstrategyorder/b4c8059c1ea08e1e65c06b75f76f516c
 func CancelMultiLegStrategyOrder(multilegorderid string, params *CancelMultiLegStrategyOrderParams) (*CancelMultiLegStrategyOrderResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("DELETE", "https://gateway.saxobank.com/sim/openapi/trade/v2/orders/multileg/{MultiLegOrderId}/?AccountKey={AccountKey}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/trade/v2/orders/multileg/{MultiLegOrderId}/?AccountKey={AccountKey}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{MultiLegOrderId}", multilegorderid))
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("DELETE", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &CancelMultiLegStrategyOrderResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -272,12 +266,12 @@ type CancelMultiLegStrategyOrderParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/trade/v2/orders/getmultilegorderstrategydefaults/ec2e10daa55d46a3e3f1a57339d936d6
 func GetMultiLegOrderStrategyDefaults(params *GetMultiLegOrderStrategyDefaultsParams) (*GetMultiLegOrderStrategyDefaultsResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/trade/v2/orders/multileg/defaults/?AccountKey={AccountKey}&OptionRootId={OptionRootId}&OptionsStrategyType={OptionsStrategyType}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/trade/v2/orders/multileg/defaults/?AccountKey={AccountKey}&OptionRootId={OptionRootId}&OptionsStrategyType={OptionsStrategyType}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetMultiLegOrderStrategyDefaultsResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {

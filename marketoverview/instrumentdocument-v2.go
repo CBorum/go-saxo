@@ -2,19 +2,18 @@
 package marketoverview
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/mkt/v2/instrumentdocument/getrecommendedinstrumentdocumentinformation/7663849659e774f55e6a9005c0ff7832
 func GetRecommendedInstrumentDocumentInformationv2(assettype string, uic string, params *GetRecommendedInstrumentDocumentInformationv2Params) (*GetRecommendedInstrumentDocumentInformationResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/mkt/v2/instruments/{Uic}/{AssetType}/documents/recommended/?DocumentTypes={DocumentTypes}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/mkt/v2/instruments/{Uic}/{AssetType}/documents/recommended/?DocumentTypes={DocumentTypes}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{AssetType}", assettype), saxo.RP("{Uic}", uic))
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetRecommendedInstrumentDocumentInformationResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -31,12 +30,13 @@ type GetRecommendedInstrumentDocumentInformationv2Params struct {
 
 // https://www.developer.saxo/openapi/referencedocs/mkt/v2/instrumentdocument/getdocumentbydocumenttypeandlanguagecode/28a08aeaa913ed3e88911e073c43ccb1
 func GetDocumentByDocumentTypeAndLanguageCodev2(assettype string, uic string, params *GetDocumentByDocumentTypeAndLanguageCodev2Params) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/mkt/v2/instruments/{Uic}/{AssetType}/documents/pdf/?DocumentType={DocumentType}&LanguageCode={LanguageCode}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/mkt/v2/instruments/{Uic}/{AssetType}/documents/pdf/?DocumentType={DocumentType}&LanguageCode={LanguageCode}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{AssetType}", assettype), saxo.RP("{Uic}", uic))
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 

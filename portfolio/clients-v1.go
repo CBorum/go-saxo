@@ -2,19 +2,16 @@
 package portfolio
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/clients/getclient/1499e70934cb99a0c9e70d53f9ad8f7d
 func GetClientMe() (*GetClientMeResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/port/v1/clients/me", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/clients/me"
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetClientMeResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -26,12 +23,12 @@ func GetClientMe() (*GetClientMeResponse, error) {
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/clients/getclient/b5e69bf214172803e7f5cd362f19f8f1
 func GetClient(clientkey string) (*GetClientResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/port/v1/clients/{ClientKey}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/clients/{ClientKey}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetClientResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -43,12 +40,11 @@ func GetClient(clientkey string) (*GetClientResponse, error) {
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/clients/updateclientsettings/be26c70709fb985d342d31aa4f5335f7
 func UpdateClientSettings(params *UpdateClientSettingsParams) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("PATCH", "https://gateway.saxobank.com/sim/openapi/port/v1/clients/me", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/clients/me"
+    resp, err := saxo.GetClient().DoRequest("PATCH", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 
@@ -61,12 +57,12 @@ type UpdateClientSettingsParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/clients/getclients/2236c8b221db10b086f5b0d73c62c8d4
 func GetClients(params *GetClientsParams) (*GetClientsResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/port/v1/clients/?$top={$top}&$skip={$skip}&$inlinecount={$inlinecount}&OwnerKey={OwnerKey}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/clients/?$top={$top}&$skip={$skip}&$inlinecount={$inlinecount}&OwnerKey={OwnerKey}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetClientsResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -84,12 +80,12 @@ type GetClientsParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/clients/updateclientsettingsforpartner/a5b5642f959f80fa7a123aedfde53036
 func UpdateClientSettingsForPartner(params *UpdateClientSettingsForPartnerParams) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("PATCH", "https://gateway.saxobank.com/sim/openapi/port/v1/clients/?ClientKey={ClientKey}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/clients/?ClientKey={ClientKey}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("PATCH", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 

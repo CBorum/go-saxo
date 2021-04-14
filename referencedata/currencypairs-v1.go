@@ -2,19 +2,17 @@
 package referencedata
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/ref/v1/currencypairs/getallcurrencypairs/ed29edb888a5d9cbb06a253547d31c62
 func GetAllCurrencyPairs(params *GetAllCurrencyPairsParams) (*GetAllCurrencyPairsResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/ref/v1/currencypairs/?AccountKey={AccountKey}&ClientKey={ClientKey}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/ref/v1/currencypairs/?AccountKey={AccountKey}&ClientKey={ClientKey}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetAllCurrencyPairsResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {

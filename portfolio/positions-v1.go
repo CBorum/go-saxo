@@ -2,19 +2,18 @@
 package portfolio
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/positions/getposition/2834dbe214c4a4a8027a55a62ce0fa52
 func GetPosition(positionid string, params *GetPositionParams) (*GetPositionResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/port/v1/positions/{PositionId}/?FieldGroups={FieldGroups}&ClientKey={ClientKey}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/positions/{PositionId}/?FieldGroups={FieldGroups}&ClientKey={ClientKey}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{PositionId}", positionid))
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetPositionResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -33,12 +32,13 @@ type GetPositionParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/positions/getpositiondetails/99b850939cbc7b0fa762221b27df1bf7
 func GetPositionDetails(positionid string, params *GetPositionDetailsParams) (*GetPositionDetailsResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/port/v1/positions/{PositionId}/details/?ClientKey={ClientKey}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/positions/{PositionId}/details/?ClientKey={ClientKey}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{PositionId}", positionid))
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetPositionDetailsResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -56,12 +56,12 @@ type GetPositionDetailsParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/positions/getpositions/b6d549a50a5f35244806aaa0554d6eae
 func GetPositionsMe(params *GetPositionsMeParams) (*GetPositionsMeResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/port/v1/positions/me/?$top={$top}&$skip={$skip}&FieldGroups={FieldGroups}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/positions/me/?$top={$top}&$skip={$skip}&FieldGroups={FieldGroups}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetPositionsMeResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -78,12 +78,12 @@ type GetPositionsMeParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/positions/getpositions/bfbf88ed3670fed36d07a558cf317254
 func GetPositions(params *GetPositionsParams) (*GetPositionsResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/port/v1/positions/?$top={$top}&$skip={$skip}&NetPositionId={NetPositionId}&PositionId={PositionId}&WatchlistId={WatchlistId}&FieldGroups={FieldGroups}&ClientKey={ClientKey}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/positions/?$top={$top}&$skip={$skip}&NetPositionId={NetPositionId}&PositionId={PositionId}&WatchlistId={WatchlistId}&FieldGroups={FieldGroups}&ClientKey={ClientKey}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetPositionsResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -106,12 +106,12 @@ type GetPositionsParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/positions/addactivesubscription/ccdff431c0efe7f9392a80239f7955d6
 func AddActiveSubscriptionPositions(params *AddActiveSubscriptionPositionsParams) (*AddActiveSubscriptionPositionsResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/port/v1/positions/subscriptions/?$top={$top}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/positions/subscriptions/?$top={$top}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &AddActiveSubscriptionPositionsResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -132,12 +132,12 @@ type AddActiveSubscriptionPositionsParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/positions/updatepositionsubscriptionpagesize/ba58baaa810ca77c20fd72b44df50821
 func UpdatePositionSubscriptionPagesize(contextid string, referenceid string, params *UpdatePositionSubscriptionPagesizeParams) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("PATCH", "https://gateway.saxobank.com/sim/openapi/port/v1/positions/subscriptions/{ContextId}/{ReferenceId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/positions/subscriptions/{ContextId}/{ReferenceId}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ContextId}", contextid), saxo.RP("{ReferenceId}", referenceid))
+    resp, err := saxo.GetClient().DoRequest("PATCH", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 
@@ -149,12 +149,13 @@ type UpdatePositionSubscriptionPagesizeParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/positions/deletesubscriptions/cec29ec11e88b1d530b675fd395f916c
 func DeleteSubscriptionsPositions(contextid string, params *DeleteSubscriptionsPositionsParams) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("DELETE", "https://gateway.saxobank.com/sim/openapi/port/v1/positions/subscriptions/{ContextId}/?Tag={Tag}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/positions/subscriptions/{ContextId}/?Tag={Tag}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ContextId}", contextid))
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("DELETE", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 
@@ -165,12 +166,12 @@ type DeleteSubscriptionsPositionsParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/positions/deletesubscription/cd8cd11da69274bbc401e46238fb287e
 func DeleteSubscriptionPositions(contextid string, referenceid string) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("DELETE", "https://gateway.saxobank.com/sim/openapi/port/v1/positions/subscriptions/{ContextId}/{ReferenceId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/positions/subscriptions/{ContextId}/{ReferenceId}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ContextId}", contextid), saxo.RP("{ReferenceId}", referenceid))
+    resp, err := saxo.GetClient().DoRequest("DELETE", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 

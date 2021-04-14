@@ -2,19 +2,18 @@
 package clientservices
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/cs/v1/historicalreportdata-closedpositions/get/9fe036fb16df327459bc4cbfb7359cb0
 func GetClosedPositions(clientkey string, fromdate string, todate string, params *GetClosedPositionsParams) (*GetClosedPositionsResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/cs/v1/reports/closedPositions/{ClientKey}/{FromDate}/{ToDate}/?$top={$top}&$skip={$skip}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cs/v1/reports/closedPositions/{ClientKey}/{FromDate}/{ToDate}/?$top={$top}&$skip={$skip}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey), saxo.RP("{FromDate}", fromdate), saxo.RP("{ToDate}", todate))
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetClosedPositionsResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {

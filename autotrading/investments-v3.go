@@ -2,19 +2,17 @@
 package autotrading
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/at/v3/investments/getinvestments/06bbe2ae26a64d753b7d82de447046d0
 func GetInvestments(params *GetInvestmentsParams) (*GetInvestmentsResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/at/v3/investments/me/?TradeLeaderId={TradeLeaderId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/at/v3/investments/me/?TradeLeaderId={TradeLeaderId}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetInvestmentsResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -29,12 +27,12 @@ type GetInvestmentsParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/at/v3/investments/getinvestment/4cad243b6c5a1d4d21f422bce85a4afb
 func GetInvestment(params *GetInvestmentParams) (*GetInvestmentResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/at/v3/investments/?InvestmentId={InvestmentId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/at/v3/investments/?InvestmentId={InvestmentId}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetInvestmentResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -49,12 +47,12 @@ type GetInvestmentParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/at/v3/investments/getinvestmentbyleader/b1eeb498e18535a8849b79679024c8a3
 func GetInvestmentByLeader(params *GetInvestmentByLeaderParams) (*GetInvestmentByLeaderResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/at/v3/investments/?TradeLeaderId={TradeLeaderId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/at/v3/investments/?TradeLeaderId={TradeLeaderId}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetInvestmentByLeaderResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -69,12 +67,11 @@ type GetInvestmentByLeaderParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/at/v3/investments/postinvestment/e0e757bd86e8433c2179f4691b529d0b
 func PostInvestment(params *PostInvestmentParams) (*PostInvestmentResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/at/v3/investments", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/at/v3/investments"
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &PostInvestmentResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -94,12 +91,12 @@ type PostInvestmentParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/at/v3/investments/patchinvestmentasync/e9fb5b36287be5ae114e5ede06a38ca5
 func PatchInvestmentAsync(investmentid string, params *PatchInvestmentAsyncParams) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("PATCH", "https://gateway.saxobank.com/sim/openapi/at/v3/investments/{InvestmentId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/at/v3/investments/{InvestmentId}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{InvestmentId}", investmentid))
+    resp, err := saxo.GetClient().DoRequest("PATCH", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 
@@ -116,12 +113,12 @@ type PatchInvestmentAsyncParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/at/v3/investments/putinvestmentasync/52ab7fecb8ea06db0175f5498c2d8de9
 func PutInvestmentAsync(investmentid string, params *PutInvestmentAsyncParams) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("PUT", "https://gateway.saxobank.com/sim/openapi/at/v3/investments/{InvestmentId}/withdraw", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/at/v3/investments/{InvestmentId}/withdraw"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{InvestmentId}", investmentid))
+    resp, err := saxo.GetClient().DoRequest("PUT", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 
@@ -133,12 +130,13 @@ type PutInvestmentAsyncParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/at/v3/investments/getmaxwithdrawalamountasync/3760b59eaa0a1408afdc165f5f59ff5d
 func GetMaxWithdrawalAmountAsync(investmentid string, params *GetMaxWithdrawalAmountAsyncParams) (*GetMaxWithdrawalAmountAsyncResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/at/v3/investments/{InvestmentId}/maxWithdrawalAmount/?TargetAccountId={TargetAccountId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/at/v3/investments/{InvestmentId}/maxWithdrawalAmount/?TargetAccountId={TargetAccountId}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{InvestmentId}", investmentid))
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetMaxWithdrawalAmountAsyncResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -154,12 +152,11 @@ type GetMaxWithdrawalAmountAsyncParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/at/v3/investments/getinvestmentsummariesasync/aa74880cbb4f924210b0a8383a9c70ab
 func GetInvestmentsummariesAsync() (*GetInvestmentsummariesAsyncResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/at/v3/investments/summaries", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/at/v3/investments/summaries"
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetInvestmentsummariesAsyncResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -171,12 +168,11 @@ func GetInvestmentsummariesAsync() (*GetInvestmentsummariesAsyncResponse, error)
 
 // https://www.developer.saxo/openapi/referencedocs/at/v3/investments/addsubscription/571d2982fe9d8bc638e70a595e009952
 func AddSubscription(params *AddSubscriptionParams) (*AddSubscriptionResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/at/v3/investments/subscriptions", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/at/v3/investments/subscriptions"
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &AddSubscriptionResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -196,12 +192,11 @@ type AddSubscriptionParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/at/v3/investments/addsuggestionsubscriptionasync/a01be3aa98325261e7d4e8536aa37173
 func AddSuggestionSubscriptionAsync(params *AddSuggestionSubscriptionAsyncParams) (*AddSuggestionSubscriptionAsyncResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/at/v3/investments/subscriptions/suggestions", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/at/v3/investments/subscriptions/suggestions"
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &AddSuggestionSubscriptionAsyncResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -221,24 +216,24 @@ type AddSuggestionSubscriptionAsyncParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/at/v3/investments/deletesubscription/886b909bc204cd913b761f20a9bfcbf2
 func DeleteSubscription(contextid string, referenceid string) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("DELETE", "https://gateway.saxobank.com/sim/openapi/at/v3/investments/subscriptions/{ContextId}/{ReferenceId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/at/v3/investments/subscriptions/{ContextId}/{ReferenceId}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ContextId}", contextid), saxo.RP("{ReferenceId}", referenceid))
+    resp, err := saxo.GetClient().DoRequest("DELETE", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 
 
 // https://www.developer.saxo/openapi/referencedocs/at/v3/investments/deletesuggestionsubscription/cd2ae815bc2766883a2dddc9ea5cca4c
 func DeleteSuggestionSubscription(contextid string, referenceid string) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("DELETE", "https://gateway.saxobank.com/sim/openapi/at/v3/investments/subscriptions/suggestions/{ContextId}/{ReferenceId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/at/v3/investments/subscriptions/suggestions/{ContextId}/{ReferenceId}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ContextId}", contextid), saxo.RP("{ReferenceId}", referenceid))
+    resp, err := saxo.GetClient().DoRequest("DELETE", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 

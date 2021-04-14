@@ -2,19 +2,16 @@
 package assettransfers
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/atr/v1/cashmanagement-cashwithdrawal/withdrawl/18f26c2a252695ffd0fb62314210bb8c
 func Withdrawl(params *WithdrawlParams) (*WithdrawlResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/atr/v1/cashmanagement/withdrawals", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/atr/v1/cashmanagement/withdrawals"
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &WithdrawlResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {

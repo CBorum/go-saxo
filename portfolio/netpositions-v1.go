@@ -2,19 +2,18 @@
 package portfolio
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/netpositions/getnetposition/cd1c10ce006e0c9f4db7c1f490191d51
 func GetNetPosition(netpositionid string, params *GetNetPositionParams) (*GetNetPositionResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/port/v1/netpositions/{NetPositionId}/?FieldGroups={FieldGroups}&ClientKey={ClientKey}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/netpositions/{NetPositionId}/?FieldGroups={FieldGroups}&ClientKey={ClientKey}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{NetPositionId}", netpositionid))
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetNetPositionResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -33,12 +32,13 @@ type GetNetPositionParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/netpositions/getnetpositiondetails/fe956944f8bb97cc409525a0f2281f56
 func GetNetPositionDetails(netpositionid string, params *GetNetPositionDetailsParams) (*GetNetPositionDetailsResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/port/v1/netpositions/{NetPositionId}/details/?ClientKey={ClientKey}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/netpositions/{NetPositionId}/details/?ClientKey={ClientKey}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{NetPositionId}", netpositionid))
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetNetPositionDetailsResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -56,12 +56,12 @@ type GetNetPositionDetailsParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/netpositions/getnetpositions/77f81ee9488691ec98679a830bb738c4
 func GetNetPositionsMe(params *GetNetPositionsMeParams) (*GetNetPositionsMeResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/port/v1/netpositions/me/?$top={$top}&$skip={$skip}&FieldGroups={FieldGroups}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/netpositions/me/?$top={$top}&$skip={$skip}&FieldGroups={FieldGroups}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetNetPositionsMeResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -78,12 +78,12 @@ type GetNetPositionsMeParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/netpositions/getnetpositions/372395024bc5f81341194857f088364e
 func GetNetPositions(params *GetNetPositionsParams) (*GetNetPositionsResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/port/v1/netpositions/?$top={$top}&$skip={$skip}&NetPositionId={NetPositionId}&Uic={Uic}&AssetType={AssetType}&ValueDate={ValueDate}&ExpiryDate={ExpiryDate}&PutCall={PutCall}&Strike={Strike}&UpperBarrier={UpperBarrier}&LowerBarrier={LowerBarrier}&WatchlistId={WatchlistId}&FieldGroups={FieldGroups}&ClientKey={ClientKey}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/netpositions/?$top={$top}&$skip={$skip}&NetPositionId={NetPositionId}&Uic={Uic}&AssetType={AssetType}&ValueDate={ValueDate}&ExpiryDate={ExpiryDate}&PutCall={PutCall}&Strike={Strike}&UpperBarrier={UpperBarrier}&LowerBarrier={LowerBarrier}&WatchlistId={WatchlistId}&FieldGroups={FieldGroups}&ClientKey={ClientKey}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetNetPositionsResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -113,12 +113,11 @@ type GetNetPositionsParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/netpositions/addactivesubscription/acbe15412d603d0b3971695cb0bb5312
 func AddActiveSubscriptionNetPositions(params *AddActiveSubscriptionNetPositionsParams) (*AddActiveSubscriptionNetPositionsResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/port/v1/netpositions/subscriptions", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/netpositions/subscriptions"
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &AddActiveSubscriptionNetPositionsResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -138,12 +137,13 @@ type AddActiveSubscriptionNetPositionsParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/netpositions/deletesubscriptions/fbe06830552db20330e85b1c97308970
 func DeleteSubscriptionsNetPositions(contextid string, params *DeleteSubscriptionsNetPositionsParams) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("DELETE", "https://gateway.saxobank.com/sim/openapi/port/v1/netpositions/subscriptions/{ContextId}/?Tag={Tag}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/netpositions/subscriptions/{ContextId}/?Tag={Tag}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ContextId}", contextid))
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("DELETE", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 
@@ -154,12 +154,12 @@ type DeleteSubscriptionsNetPositionsParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/netpositions/deletesubscription/f9915a776e787f4d05f8820d1cfd0cf0
 func DeleteSubscriptionNetPositions(contextid string, referenceid string) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("DELETE", "https://gateway.saxobank.com/sim/openapi/port/v1/netpositions/subscriptions/{ContextId}/{ReferenceId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/netpositions/subscriptions/{ContextId}/{ReferenceId}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ContextId}", contextid), saxo.RP("{ReferenceId}", referenceid))
+    resp, err := saxo.GetClient().DoRequest("DELETE", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 

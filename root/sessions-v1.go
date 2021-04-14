@@ -2,19 +2,16 @@
 package root
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/root/v1/sessions/getcapabilities/7fe2af209d7d1d351faa2774702c749c
 func GetCapabilities() (*GetCapabilitiesResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/root/v1/sessions/capabilities", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/root/v1/sessions/capabilities"
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetCapabilitiesResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -26,12 +23,11 @@ func GetCapabilities() (*GetCapabilitiesResponse, error) {
 
 // https://www.developer.saxo/openapi/referencedocs/root/v1/sessions/setcapabilities/0d4fbb3253171f8979462a11e91c1237
 func SetCapabilities(params *SetCapabilitiesParams) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("PUT", "https://gateway.saxobank.com/sim/openapi/root/v1/sessions/capabilities", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/root/v1/sessions/capabilities"
+    resp, err := saxo.GetClient().DoRequest("PUT", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 
@@ -41,12 +37,11 @@ type SetCapabilitiesParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/root/v1/sessions/patchcapabilities/0406615b3eb2adb17fa24f870f0b9202
 func PatchCapabilities(params *PatchCapabilitiesParams) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("PATCH", "https://gateway.saxobank.com/sim/openapi/root/v1/sessions/capabilities", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/root/v1/sessions/capabilities"
+    resp, err := saxo.GetClient().DoRequest("PATCH", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 
@@ -56,12 +51,11 @@ type PatchCapabilitiesParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/root/v1/sessions/addsubscription/319e322e524340b7caa662adac83541a
 func AddSubscription(params *AddSubscriptionParams) (*AddSubscriptionResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/root/v1/sessions/events/subscriptions", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/root/v1/sessions/events/subscriptions"
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &AddSubscriptionResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -80,12 +74,12 @@ type AddSubscriptionParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/root/v1/sessions/deletesubscription/a7d07e55e77d4bfd3e52d703595ab76c
 func DeleteSubscription(contextid string, referenceid string) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("DELETE", "https://gateway.saxobank.com/sim/openapi/root/v1/sessions/events/subscriptions/{ContextId}/{ReferenceId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/root/v1/sessions/events/subscriptions/{ContextId}/{ReferenceId}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ContextId}", contextid), saxo.RP("{ReferenceId}", referenceid))
+    resp, err := saxo.GetClient().DoRequest("DELETE", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 

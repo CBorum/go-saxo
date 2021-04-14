@@ -2,19 +2,17 @@
 package charts
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/chart/v1/charts/getchartdataasync/387cfc61d3292d9237095b9144ac4733
 func GetChartDataAsync(params *GetChartDataAsyncParams) (*GetChartDataAsyncResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/chart/v1/charts/?AssetType={AssetType}&Count={Count}&FieldGroups={FieldGroups}&Horizon={Horizon}&Mode={Mode}&Time={Time}&Uic={Uic}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/chart/v1/charts/?AssetType={AssetType}&Count={Count}&FieldGroups={FieldGroups}&Horizon={Horizon}&Mode={Mode}&Time={Time}&Uic={Uic}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetChartDataAsyncResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -35,12 +33,11 @@ type GetChartDataAsyncParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/chart/v1/charts/addsubscriptionasync/ffe4364c2a06b804b58ce27ad5c8d521
 func AddSubscriptionAsync(params *AddSubscriptionAsyncParams) (*AddSubscriptionAsyncResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/chart/v1/charts/subscriptions", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/chart/v1/charts/subscriptions"
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &AddSubscriptionAsyncResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -60,12 +57,13 @@ type AddSubscriptionAsyncParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/chart/v1/charts/deletesubscriptions/1f8284579f1a2d3b594c2e6855b14f63
 func DeleteSubscriptions(contextid string, params *DeleteSubscriptionsParams) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("DELETE", "https://gateway.saxobank.com/sim/openapi/chart/v1/charts/subscriptions/{ContextId}/?Tag={Tag}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/chart/v1/charts/subscriptions/{ContextId}/?Tag={Tag}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ContextId}", contextid))
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("DELETE", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 
@@ -76,12 +74,12 @@ type DeleteSubscriptionsParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/chart/v1/charts/deletesubscription/017501f47274e61e09d79c1bed9680df
 func DeleteSubscription(contextid string, referenceid string) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("DELETE", "https://gateway.saxobank.com/sim/openapi/chart/v1/charts/subscriptions/{ContextId}/{ReferenceId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/chart/v1/charts/subscriptions/{ContextId}/{ReferenceId}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ContextId}", contextid), saxo.RP("{ReferenceId}", referenceid))
+    resp, err := saxo.GetClient().DoRequest("DELETE", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 

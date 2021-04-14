@@ -2,6 +2,7 @@ package saxo
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/imroc/req"
@@ -35,17 +36,44 @@ func GetClient() *saxoClient {
 }
 
 func (saxoClient *saxoClient) DoRequest(method string, url string, body interface{}) (*req.Resp, error) {
-	log.Debug("Requesting", method, url)
-	fmt.Println(bearerToken)
+	if len(bearerToken) == 0 {
+		return nil, fmt.Errorf("no bearer token set")
+	}
+	log.Infoln("Requesting", method, url)
 	authHeader := req.Header{
 		"Accept":        "application/json",
 		"Authorization": fmt.Sprintf("Bearer %s", bearerToken),
 	}
 
-	if body != nil {
-		return req.Do(method, url, authHeader, req.BodyJSON(body))
+	resp, err := saxoClient.HttpClient.Do(method, url, authHeader, req.BodyJSON(body))
+	if err != nil {
+		return nil, err
+	} else if sc := resp.Response().StatusCode; sc >= 300 {
+		return nil, fmt.Errorf("unexpected status code %d", sc)
 	}
-	return req.Do(method, url, authHeader)
+
+	return resp, nil
+}
+
+func PrepareUrlRoute(url string, params ...RouteParam) string {
+	for _, param := range params {
+		url = strings.Replace(url, param.key, param.value, 1)
+	}
+	return url
+}
+
+func PrepareUrlParams(url string, params interface{}) string {
+
+	return url
+}
+
+type RouteParam struct {
+	key   string
+	value string
+}
+
+func RP(key, value string) RouteParam {
+	return RouteParam{key, value}
 }
 
 type AssetType string

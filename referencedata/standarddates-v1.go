@@ -2,19 +2,18 @@
 package referencedata
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/ref/v1/standarddates/getforwardtenordates/f3b91ed5e08e1d663c7a33bf045df567
 func GetForwardTenorDates(uic string, params *GetForwardTenorDatesParams) (*GetForwardTenorDatesResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/ref/v1/standarddates/forwardtenor/{Uic}/?AccountKey={AccountKey}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/ref/v1/standarddates/forwardtenor/{Uic}/?AccountKey={AccountKey}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{Uic}", uic))
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetForwardTenorDatesResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -30,12 +29,12 @@ type GetForwardTenorDatesParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/ref/v1/standarddates/getfxoptionexpirydates/be7b3c6935a397693069a0529b2c7490
 func GetFxOptionExpiryDates(uic string) (*GetFxOptionExpiryDatesResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/ref/v1/standarddates/fxoptionexpiry/{Uic}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/ref/v1/standarddates/fxoptionexpiry/{Uic}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{Uic}", uic))
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetFxOptionExpiryDatesResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {

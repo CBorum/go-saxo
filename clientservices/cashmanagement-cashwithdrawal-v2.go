@@ -2,19 +2,16 @@
 package clientservices
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/cs/v2/cashmanagement-cashwithdrawal/withdrawibanswift/2e34612be404d9a96b3de393e3d2ccf0
 func WithdrawIBanSwift(params *WithdrawIBanSwiftParams) (*WithdrawIBanSwiftResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/cs/v2/cashmanagement/withdrawals/WithdrawIBanSwift", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cs/v2/cashmanagement/withdrawals/WithdrawIBanSwift"
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &WithdrawIBanSwiftResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -37,12 +34,11 @@ type WithdrawIBanSwiftParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/cs/v2/cashmanagement-cashwithdrawal/withdrawalaccountnumberswift/9a7fbe8d2d7a3817c47bbd35acbda78c
 func WithdrawalAccountNumberSwift(params *WithdrawalAccountNumberSwiftParams) (*WithdrawalAccountNumberSwiftResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/cs/v2/cashmanagement/withdrawals/WithdrawalAccountNumberSwift", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cs/v2/cashmanagement/withdrawals/WithdrawalAccountNumberSwift"
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &WithdrawalAccountNumberSwiftResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -65,12 +61,11 @@ type WithdrawalAccountNumberSwiftParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/cs/v2/cashmanagement-cashwithdrawal/withdrawalaccountnumberbeneficiarybank/b68d380e739bc8b08a400af8e6c8c0f5
 func WithdrawalAccountNumberBeneficiaryBank(params *WithdrawalAccountNumberBeneficiaryBankParams) (*WithdrawalAccountNumberBeneficiaryBankResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/cs/v2/cashmanagement/withdrawals/WithdrawalAccountNumberBeneficiaryBank", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cs/v2/cashmanagement/withdrawals/WithdrawalAccountNumberBeneficiaryBank"
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &WithdrawalAccountNumberBeneficiaryBankResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -97,12 +92,11 @@ type WithdrawalAccountNumberBeneficiaryBankParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/cs/v2/cashmanagement-cashwithdrawal/withdrawalibanbeneficiarybank/09eba5f22f167ed870b47e0328b20d73
 func WithdrawalIBanBeneficiaryBank(params *WithdrawalIBanBeneficiaryBankParams) (*WithdrawalIBanBeneficiaryBankResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/cs/v2/cashmanagement/withdrawals/WithdrawalIbanBeneficiaryBank", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cs/v2/cashmanagement/withdrawals/WithdrawalIbanBeneficiaryBank"
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &WithdrawalIBanBeneficiaryBankResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {

@@ -2,19 +2,18 @@
 package clientservices
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/cs/v1/tradingconditions-contractoption/getforcontractoption/6556258a209cfef88493b8c47a92257e
 func GetForContractOption(accountkey string, optionrootid string, params *GetForContractOptionParams) (*GetForContractOptionResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/cs/v1/tradingconditions/ContractOptionSpaces/{AccountKey}/{OptionRootId}/?FieldGroups={FieldGroups}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cs/v1/tradingconditions/ContractOptionSpaces/{AccountKey}/{OptionRootId}/?FieldGroups={FieldGroups}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{AccountKey}", accountkey), saxo.RP("{OptionRootId}", optionrootid))
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetForContractOptionResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {

@@ -2,19 +2,17 @@
 package clientservices
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/cs/v1/audit-activities/get/65af3f977d65b3d98c66d7e86aa3ef8e
 func GetActivities(params *GetActivitiesParams) (*GetActivitiesResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/cs/v1/audit/activities/?$top={$top}&$skiptoken={$skiptoken}&ClientKey={ClientKey}&From={From}&To={To}&LogEntryTypes={LogEntryTypes}&AccountKey={AccountKey}&PostingId={PostingId}&CorrelationKey={CorrelationKey}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cs/v1/audit/activities/?$top={$top}&$skiptoken={$skiptoken}&ClientKey={ClientKey}&From={From}&To={To}&LogEntryTypes={LogEntryTypes}&AccountKey={AccountKey}&PostingId={PostingId}&CorrelationKey={CorrelationKey}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetActivitiesResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {

@@ -2,19 +2,18 @@
 package accounthistory
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/hist/v3/accountvalues/getstandardperiodaccountvalues/c7fad35632375ae303328622f2cf2034
 func GetStandardPeriodAccountValues(clientkey string, params *GetStandardPeriodAccountValuesParams) (*GetStandardPeriodAccountValuesResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/hist/v3/accountvalues/{ClientKey}/?MockDataId={MockDataId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/hist/v3/accountvalues/{ClientKey}/?MockDataId={MockDataId}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetStandardPeriodAccountValuesResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {

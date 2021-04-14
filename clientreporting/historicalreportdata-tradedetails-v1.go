@@ -2,19 +2,18 @@
 package clientreporting
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/cr/v1/historicalreportdata-tradedetails/getasync/982c285ce68c79f21b74914bc6d5f6b7
 func GetAsyncTradeDetails(clientkey string, params *GetAsyncTradeDetailsParams) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/cr/v1/reports/TradeDetails/{ClientKey}/?AccountKey={AccountKey}&TradeId={TradeId}&FilterType={FilterType}&FilterValue={FilterValue}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cr/v1/reports/TradeDetails/{ClientKey}/?AccountKey={AccountKey}&TradeId={TradeId}&FilterType={FilterType}&FilterValue={FilterValue}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 

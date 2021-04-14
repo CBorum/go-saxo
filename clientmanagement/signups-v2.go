@@ -2,19 +2,17 @@
 package clientmanagement
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/cm/v2/signups/attachfile/c454ca859a123e91d13713077160e4bf
 func AttachFilev2(signupid string, params *AttachFilev2Params) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/cm/v2/signups/attachments/{SignUpId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cm/v2/signups/attachments/{SignUpId}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{SignUpId}", signupid))
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 
@@ -25,12 +23,11 @@ type AttachFilev2Params struct {
 
 // https://www.developer.saxo/openapi/referencedocs/cm/v2/signups/getsignupoptions/ca505c6067de94f36e04ab9c37895413
 func GetSignupOptionsv2() (*GetSignupOptionsResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/cm/v2/signups/options", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/cm/v2/signups/options"
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetSignupOptionsResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {

@@ -2,19 +2,16 @@
 package trading
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/trade/v1/optionschain/addsubscriptionasync/b6c2529e483362a3931cf8d76ca1ed15
 func AddSubscriptionAsyncOptionsChain(params *AddSubscriptionAsyncOptionsChainParams) (*AddSubscriptionAsyncOptionsChainResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/trade/v1/optionschain/subscriptions", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/trade/v1/optionschain/subscriptions"
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &AddSubscriptionAsyncOptionsChainResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -34,12 +31,12 @@ type AddSubscriptionAsyncOptionsChainParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/trade/v1/optionschain/modifysubscription/708b5f9d261312d07249ef8b0c0ccf52
 func ModifySubscriptionOptionsChain(contextid string, referenceid string, params *ModifySubscriptionOptionsChainParams) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("PATCH", "https://gateway.saxobank.com/sim/openapi/trade/v1/optionschain/subscriptions/{ContextId}/{ReferenceId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/trade/v1/optionschain/subscriptions/{ContextId}/{ReferenceId}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ContextId}", contextid), saxo.RP("{ReferenceId}", referenceid))
+    resp, err := saxo.GetClient().DoRequest("PATCH", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 
@@ -52,24 +49,24 @@ type ModifySubscriptionOptionsChainParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/trade/v1/optionschain/deletesubscription/e1517f90a09669c3a5d1cc155a4985ca
 func DeleteSubscriptionOptionsChain(contextid string, referenceid string) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("DELETE", "https://gateway.saxobank.com/sim/openapi/trade/v1/optionschain/subscriptions/{ContextId}/{ReferenceId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/trade/v1/optionschain/subscriptions/{ContextId}/{ReferenceId}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ContextId}", contextid), saxo.RP("{ReferenceId}", referenceid))
+    resp, err := saxo.GetClient().DoRequest("DELETE", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 
 
 // https://www.developer.saxo/openapi/referencedocs/trade/v1/optionschain/resetsubscriptionatthemoney/7e907875f27f8443d73c8a6deb8efe31
 func ResetSubscriptionAtTheMoney(contextid string, referenceid string) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("PUT", "https://gateway.saxobank.com/sim/openapi/trade/v1/optionschain/subscriptions/{ContextId}/{ReferenceId}/ResetATM", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/trade/v1/optionschain/subscriptions/{ContextId}/{ReferenceId}/ResetATM"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ContextId}", contextid), saxo.RP("{ReferenceId}", referenceid))
+    resp, err := saxo.GetClient().DoRequest("PUT", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 

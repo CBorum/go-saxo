@@ -2,19 +2,16 @@
 package portfolio
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/exposure/getinstrumentsexposures/ab93eea87c584040f55510b93eeb75f2
 func GetInstrumentsExposures() (*GetInstrumentsExposuresResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/port/v1/exposure/instruments/me", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/exposure/instruments/me"
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetInstrumentsExposuresResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -26,12 +23,12 @@ func GetInstrumentsExposures() (*GetInstrumentsExposuresResponse, error) {
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/exposure/getinstrumentsexposuresforloggedinuser/66dbe48120b9e4510567a7f44b7a8580
 func GetInstrumentsExposuresForLoggedInUser(params *GetInstrumentsExposuresForLoggedInUserParams) (*GetInstrumentsExposuresForLoggedInUserResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/port/v1/exposure/instruments/?Uic={Uic}&AssetType={AssetType}&ValueDate={ValueDate}&ExpiryDate={ExpiryDate}&PutCall={PutCall}&Strike={Strike}&UpperBarrier={UpperBarrier}&LowerBarrier={LowerBarrier}&ClientKey={ClientKey}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/exposure/instruments/?Uic={Uic}&AssetType={AssetType}&ValueDate={ValueDate}&ExpiryDate={ExpiryDate}&PutCall={PutCall}&Strike={Strike}&UpperBarrier={UpperBarrier}&LowerBarrier={LowerBarrier}&ClientKey={ClientKey}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetInstrumentsExposuresForLoggedInUserResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -56,12 +53,11 @@ type GetInstrumentsExposuresForLoggedInUserParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/exposure/addactivesubscription/d6963365a060776b79d3e9713ef0a7e2
 func AddActiveSubscriptionExposures(params *AddActiveSubscriptionExposuresParams) (*AddActiveSubscriptionExposuresResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/port/v1/exposure/instruments/subscriptions", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/exposure/instruments/subscriptions"
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &AddActiveSubscriptionExposuresResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -81,12 +77,13 @@ type AddActiveSubscriptionExposuresParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/exposure/deletesubscriptions/0f53c7d5b8c3a22c4f34bf6034a8de61
 func DeleteSubscriptionsExposures(contextid string, params *DeleteSubscriptionsExposuresParams) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("DELETE", "https://gateway.saxobank.com/sim/openapi/port/v1/exposure/instruments/subscriptions/{ContextId}/?Tag={Tag}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/exposure/instruments/subscriptions/{ContextId}/?Tag={Tag}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ContextId}", contextid))
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("DELETE", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 
@@ -97,24 +94,23 @@ type DeleteSubscriptionsExposuresParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/exposure/deletesubscription/c80bfdfa57b45923050bfc437bc52ac9
 func DeleteSubscriptionExposures(contextid string, referenceid string) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("DELETE", "https://gateway.saxobank.com/sim/openapi/port/v1/exposure/instruments/subscriptions/{ContextId}/{ReferenceId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/exposure/instruments/subscriptions/{ContextId}/{ReferenceId}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{ContextId}", contextid), saxo.RP("{ReferenceId}", referenceid))
+    resp, err := saxo.GetClient().DoRequest("DELETE", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/exposure/getcurrencyexposures/bd3b48164105531dcba0069db33a27ec
 func GetCurrencyExposures() (*GetCurrencyExposuresResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/port/v1/exposure/currency/me", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/exposure/currency/me"
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetCurrencyExposuresResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -126,12 +122,12 @@ func GetCurrencyExposures() (*GetCurrencyExposuresResponse, error) {
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/exposure/getcurrencyexposuresforloggedinuser/3ef64ff498143552f7335457ba98c4c9
 func GetCurrencyExposuresForLoggedInUser(params *GetCurrencyExposuresForLoggedInUserParams) (*GetCurrencyExposuresForLoggedInUserResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/port/v1/exposure/currency/?ClientKey={ClientKey}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/exposure/currency/?ClientKey={ClientKey}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetCurrencyExposuresForLoggedInUserResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -148,12 +144,11 @@ type GetCurrencyExposuresForLoggedInUserParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/exposure/getfxspotnetexposures/e97cc469e4ce12a66447c5a8d485181d
 func GetFxSpotNetExposures() (*GetFxSpotNetExposuresResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/port/v1/exposure/fxspot/me", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/exposure/fxspot/me"
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetFxSpotNetExposuresResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -165,12 +160,12 @@ func GetFxSpotNetExposures() (*GetFxSpotNetExposuresResponse, error) {
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/exposure/getfxspotnetexposuresforloggedinuser/48a55afbadbf96ede73ef5f99e29c803
 func GetFxSpotNetExposuresForLoggedInUser(params *GetFxSpotNetExposuresForLoggedInUserParams) (*GetFxSpotNetExposuresForLoggedInUserResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("GET", "https://gateway.saxobank.com/sim/openapi/port/v1/exposure/fxspot/?ClientKey={ClientKey}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/port/v1/exposure/fxspot/?ClientKey={ClientKey}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}"
+    url = saxo.PrepareUrlParams(url, params)
+    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &GetFxSpotNetExposuresForLoggedInUserResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {

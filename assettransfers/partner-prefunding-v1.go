@@ -2,19 +2,16 @@
 package assettransfers
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/atr/v1/partner-prefunding/prebookfunddeposit/f87719a93264749430d6eb7a234aa3af
 func PrebookFundDeposit(params *PrebookFundDepositParams) ([]byte, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/atr/v1/partner/prebookedfunds", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/atr/v1/partner/prebookedfunds"
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     return resp.Bytes(), nil 
 }
 

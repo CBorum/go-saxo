@@ -2,19 +2,16 @@
 package trading
 
 import (
-    "fmt"
-
 	"github.com/cborum/go-saxo"
 )
 
 // https://www.developer.saxo/openapi/referencedocs/trade/v1/positions/createposition/d3387419f4ffb6c9877997702cb75ae2
 func CreatePosition(params *CreatePositionParams) (*CreatePositionResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("POST", "https://gateway.saxobank.com/sim/openapi/trade/v1/positions", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/trade/v1/positions"
+    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &CreatePositionResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -36,12 +33,12 @@ type CreatePositionParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/trade/v1/positions/updateposition/dc09651b2b70d8fbd41ffab64e335cb4
 func UpdatePosition(positionid string, params *UpdatePositionParams) (*UpdatePositionResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("PATCH", "https://gateway.saxobank.com/sim/openapi/trade/v1/positions/{PositionId}", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/trade/v1/positions/{PositionId}"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{PositionId}", positionid))
+    resp, err := saxo.GetClient().DoRequest("PATCH", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &UpdatePositionResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -59,12 +56,12 @@ type UpdatePositionParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/trade/v1/positions/exercisepositionasync/91ec1719ac32f69dd30414ced6876414
 func ExercisePositionAsync(positionid string, params *ExercisePositionAsyncParams) (*ExercisePositionAsyncResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("PUT", "https://gateway.saxobank.com/sim/openapi/trade/v1/positions/{PositionId}/exercise", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/trade/v1/positions/{PositionId}/exercise"
+    url = saxo.PrepareUrlRoute(url, saxo.RP("{PositionId}", positionid))
+    resp, err := saxo.GetClient().DoRequest("PUT", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &ExercisePositionAsyncResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
@@ -84,12 +81,11 @@ type ExercisePositionAsyncParams struct {
 
 // https://www.developer.saxo/openapi/referencedocs/trade/v1/positions/exerciseamountasync/98678d03e1c50ee18e3b50d80d43df88
 func ExerciseAmountAsync(params *ExerciseAmountAsyncParams) (*ExerciseAmountAsyncResponse, error) {
-    resp, err := saxo.GetClient().DoRequest("PUT", "https://gateway.saxobank.com/sim/openapi/trade/v1/positions/exercise", nil) 
+    url := "https://gateway.saxobank.com/sim/openapi/trade/v1/positions/exercise"
+    resp, err := saxo.GetClient().DoRequest("PUT", url, nil) 
     if err != nil {
         return nil, err
-    } else if sc := resp.Response().StatusCode; sc >= 300 {
-		return nil, fmt.Errorf("unexpected status code %d", sc)
-	}
+    }
     respJson := &ExerciseAmountAsyncResponse{}
     err = resp.ToJSON(respJson)
     if err != nil {
