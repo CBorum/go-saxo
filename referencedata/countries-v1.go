@@ -7,16 +7,15 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/ref/v1/countries/get/42d9cba308842cabfb9deefa2a5b3d66
 func GetCountries() (*GetCountriesResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/ref/v1/countries"
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetCountriesResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/ref/v1/countries"
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetCountriesResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
-

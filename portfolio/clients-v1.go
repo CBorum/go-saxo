@@ -7,92 +7,90 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/clients/getclient/1499e70934cb99a0c9e70d53f9ad8f7d
 func GetClientMe() (*GetClientMeResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/port/v1/clients/me"
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetClientMeResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/port/v1/clients/me"
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetClientMeResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
-
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/clients/getclient/b5e69bf214172803e7f5cd362f19f8f1
 func GetClient(clientkey string) (*GetClientResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/port/v1/clients/{ClientKey}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetClientResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/port/v1/clients/{ClientKey}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetClientResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
-
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/clients/updateclientsettings/be26c70709fb985d342d31aa4f5335f7
 func UpdateClientSettings(params *UpdateClientSettingsParams) ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/port/v1/clients/me"
-    resp, err := saxo.GetClient().DoRequest("PATCH", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/port/v1/clients/me"
+	resp, err := saxo.GetClient().DoRequest("PATCH", url, params)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
 
-type UpdateClientSettingsParams struct { 
-    AccountValueProtectionLimit float64
-    ForceOpenDefaultValue bool
-    NewPositionNettingMode string
-    NewPositionNettingProfile string 
+type UpdateClientSettingsParams struct {
+	AccountValueProtectionLimit float64
+	ForceOpenDefaultValue       bool
+	NewPositionNettingMode      string
+	NewPositionNettingProfile   string
 }
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/clients/getclients/2236c8b221db10b086f5b0d73c62c8d4
 func GetClients(params *GetClientsParams) (*GetClientsResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/port/v1/clients/?$top={$top}&$skip={$skip}&$inlinecount={$inlinecount}&OwnerKey={OwnerKey}"
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetClientsResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/port/v1/clients/?$top={$top}&$skip={$skip}&$inlinecount={$inlinecount}&OwnerKey={OwnerKey}"
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetClientsResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type GetClientsParams struct { 
-    inlinecount string
-    skip int64
-    top int64
-    OwnerKey string // required 
+type GetClientsParams struct {
+	Inlinecount string `url:",omitempty"`
+	Skip        int64  `url:",omitempty"`
+	Top         int64  `url:",omitempty"`
+	OwnerKey    string // required
 }
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/clients/updateclientsettingsforpartner/a5b5642f959f80fa7a123aedfde53036
 func UpdateClientSettingsForPartner(params *UpdateClientSettingsForPartnerParams) ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/port/v1/clients/?ClientKey={ClientKey}"
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("PATCH", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/port/v1/clients/?ClientKey={ClientKey}"
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("PATCH", url, params)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
 
-type UpdateClientSettingsForPartnerParams struct { 
-    AccountValueProtectionLimit float64
-    ClientKey string // required
-    ForceOpenDefaultValue bool
-    NewPositionNettingMode string
-    NewPositionNettingProfile string 
+type UpdateClientSettingsForPartnerParams struct {
+	AccountValueProtectionLimit float64
+	ClientKey                   string // required
+	ForceOpenDefaultValue       bool
+	NewPositionNettingMode      string
+	NewPositionNettingProfile   string
 }

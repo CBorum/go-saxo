@@ -7,21 +7,21 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/atr/v1/cashmanagement-beneficiaryinstructions/getbeneficiaryinstructionsasync/d1fada87658f83fb9ea6772312cf4b13
 func GetBeneficiaryInstructionsAsync(params *GetBeneficiaryInstructionsAsyncParams) (*GetBeneficiaryInstructionsAsyncResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/atr/v1/cashmanagement/beneficiaryinstructions/?ClientKey={ClientKey}&Currency={Currency}"
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetBeneficiaryInstructionsAsyncResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/atr/v1/cashmanagement/beneficiaryinstructions/?ClientKey={ClientKey}&Currency={Currency}"
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetBeneficiaryInstructionsAsyncResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type GetBeneficiaryInstructionsAsyncParams struct { 
-    ClientKey string
-    Currency string 
+type GetBeneficiaryInstructionsAsyncParams struct {
+	ClientKey string `url:",omitempty"`
+	Currency  string `url:",omitempty"`
 }

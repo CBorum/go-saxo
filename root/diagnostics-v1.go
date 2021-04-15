@@ -7,77 +7,70 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/root/v1/diagnostics/get/587ecb1c8e6d7c9c00749c08df3af0d1
 func GetDiagnostics() ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/root/v1/diagnostics/get"
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/root/v1/diagnostics/get"
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
-
 
 // https://www.developer.saxo/openapi/referencedocs/root/v1/diagnostics/post/b604ce168031c07f259dd84a07dc8f41
 func PostDiagnostics() ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/root/v1/diagnostics/post"
-    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/root/v1/diagnostics/post"
+	resp, err := saxo.GetClient().DoRequest("POST", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
-
 
 // https://www.developer.saxo/openapi/referencedocs/root/v1/diagnostics/put/9bc2a0831d9e9df85c126e4ff96348a7
 func PutDiagnostics() ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/root/v1/diagnostics/put"
-    resp, err := saxo.GetClient().DoRequest("PUT", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/root/v1/diagnostics/put"
+	resp, err := saxo.GetClient().DoRequest("PUT", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
-
 
 // https://www.developer.saxo/openapi/referencedocs/root/v1/diagnostics/delete/248af0cb95c5a8e36fecf18d532a9511
 func DeleteDiagnostics() ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/root/v1/diagnostics/delete"
-    resp, err := saxo.GetClient().DoRequest("DELETE", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/root/v1/diagnostics/delete"
+	resp, err := saxo.GetClient().DoRequest("DELETE", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
-
 
 // https://www.developer.saxo/openapi/referencedocs/root/v1/diagnostics/patch/9170f1a38321249d883d86003513aa6a
 func PatchDiagnostics() ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/root/v1/diagnostics/patch"
-    resp, err := saxo.GetClient().DoRequest("PATCH", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/root/v1/diagnostics/patch"
+	resp, err := saxo.GetClient().DoRequest("PATCH", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
-
 
 // https://www.developer.saxo/openapi/referencedocs/root/v1/diagnostics/head/144a22a97bc687397510353f11cbc2af
 func HeadDiagnostics() ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/root/v1/diagnostics/head"
-    resp, err := saxo.GetClient().DoRequest("HEAD", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/root/v1/diagnostics/head"
+	resp, err := saxo.GetClient().DoRequest("HEAD", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
-
 
 // https://www.developer.saxo/openapi/referencedocs/root/v1/diagnostics/options/499592fb36c5e14d5712f78955301aca
 func OptionsDiagnostics() ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/root/v1/diagnostics/options"
-    resp, err := saxo.GetClient().DoRequest("OPTIONS", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/root/v1/diagnostics/options"
+	resp, err := saxo.GetClient().DoRequest("OPTIONS", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
-

@@ -7,39 +7,34 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/cr/v1/historicalreportdata-portfoliomanagement/getasync/562203fc923449262bf0624e9284d66b
 func GetAsyncPortfolioManagement(clientkey string, fromdate string, todate string, params *GetAsyncPortfolioManagementParams) ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/cr/v1/reports/Portfolio/{ClientKey}/{Fromdate}/{ToDate}/?AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey), saxo.RP("{FromDate}", fromdate), saxo.RP("{ToDate}", todate))
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/cr/v1/reports/Portfolio/{ClientKey}/{Fromdate}/{ToDate}/?AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey), saxo.RP("{FromDate}", fromdate), saxo.RP("{ToDate}", todate))
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
 
-type GetAsyncPortfolioManagementParams struct { 
-    AccountGroupKey string
-    AccountKey string
-    
-    
-     
+type GetAsyncPortfolioManagementParams struct {
+	AccountGroupKey string `url:",omitempty"`
+	AccountKey      string `url:",omitempty"`
 }
 
 // https://www.developer.saxo/openapi/referencedocs/cr/v1/historicalreportdata-portfoliomanagement/getmeasync/466315d85a16246a7ab0f3e3c2ff516c
 func GetMeAsyncPortfolioManagement(fromdate string, todate string, params *GetMeAsyncPortfolioManagementParams) ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/cr/v1/reports/Portfolio/me/{Fromdate}/{ToDate}/?AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{FromDate}", fromdate), saxo.RP("{ToDate}", todate))
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/cr/v1/reports/Portfolio/me/{Fromdate}/{ToDate}/?AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{FromDate}", fromdate), saxo.RP("{ToDate}", todate))
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
 
-type GetMeAsyncPortfolioManagementParams struct { 
-    AccountGroupKey string
-    AccountKey string
-    
-     
+type GetMeAsyncPortfolioManagementParams struct {
+	AccountGroupKey string `url:",omitempty"`
+	AccountKey      string `url:",omitempty"`
 }

@@ -7,21 +7,21 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/atr/v1/partner-cashtransferlimits/getcashtransferslimits/1fe73536a26078ae94af96a6fc33268d
 func GetCashTransfersLimits(params *GetCashTransfersLimitsParams) (*GetCashTransfersLimitsResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/atr/v1/partner/cashtransferlimits/?ClientKey={ClientKey}&AccountKey={AccountKey}"
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetCashTransfersLimitsResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/atr/v1/partner/cashtransferlimits/?ClientKey={ClientKey}&AccountKey={AccountKey}"
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetCashTransfersLimitsResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type GetCashTransfersLimitsParams struct { 
-    AccountKey string // required
-    ClientKey string // required 
+type GetCashTransfersLimitsParams struct {
+	AccountKey string // required
+	ClientKey  string // required
 }

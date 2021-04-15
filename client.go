@@ -5,6 +5,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/google/go-querystring/query"
 	"github.com/imroc/req"
 	log "github.com/sirupsen/logrus"
 )
@@ -63,8 +64,24 @@ func PrepareUrlRoute(url string, params ...RouteParam) string {
 }
 
 func PrepareUrlParams(url string, params interface{}) string {
-
+	log.Infoln("before", url)
+	url = strings.SplitN(url, "?", 2)[0]
+	v, err := query.Values(params)
+	if err != nil {
+		panic(err)
+	}
+	query := v.Encode()
+	if len(query) != 0 {
+		url = fmt.Sprintf("%s?%s", url, v.Encode())
+	}
+	url = formatTopAndSkip(url)
+	log.Infoln("after", url)
 	return url
+}
+
+func formatTopAndSkip(url string) string { // TODO: on url tag on params
+	temp := strings.Replace(url, "Skip=", "$skip=", 1)
+	return strings.Replace(temp, "Top=", "$top=", 1)
 }
 
 type RouteParam struct {

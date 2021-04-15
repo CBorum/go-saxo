@@ -51,7 +51,6 @@ func main() {
 		"title":                 strings.Title,
 		"lower":                 strings.ToLower,
 		"getFuncParameters":     getFuncParameters,
-		"isNonRoute":            isNonRoute,
 		"hasNonRouteParameters": hasNonRouteParameters,
 		"sanitize":              sanitize,
 		"getParamType":          getParamType,
@@ -59,7 +58,9 @@ func main() {
 		"hasResponseType":       hasResponseType,
 		"hasQueryParams":        hasQueryParams,
 		"hasRouteParams":        hasRouteParams,
+		"getNonRouteParams":     getNonRouteParams,
 		"getRouteParams":        getRouteParams,
+		"hasPostParams":         hasPostParams,
 	}
 	templateFile, err := os.ReadFile("cmd/generate/templates/service.tmpl")
 	panicIfErr(err)
@@ -147,10 +148,6 @@ func hasNonRouteParameters(parameters []Parameter) bool {
 		}
 	}
 	return false
-}
-
-func isNonRoute(q string) bool {
-	return q != "Route"
 }
 
 func sanitize(str string) string {
@@ -262,6 +259,16 @@ func hasRouteParams(params []Parameter) bool {
 	return false
 }
 
+func getNonRouteParams(params []Parameter) []Parameter {
+	pp := make([]Parameter, 0)
+	for _, v := range params {
+		if v.Origin != "Route" {
+			pp = append(pp, v)
+		}
+	}
+	return pp
+}
+
 func getRouteParams(params []Parameter) string {
 	ss := []string{}
 	for _, v := range params {
@@ -270,6 +277,15 @@ func getRouteParams(params []Parameter) string {
 		}
 	}
 	return strings.Join(ss, ", ")
+}
+
+func hasPostParams(params []Parameter) bool {
+	for _, v := range params {
+		if v.Origin == "Body" {
+			return true
+		}
+	}
+	return false
 }
 
 type TemplateData struct {

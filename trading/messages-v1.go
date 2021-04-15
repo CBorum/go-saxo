@@ -7,95 +7,91 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/trade/v1/messages/getmessagesasync/c4548e4add65671bb9612cc152f8298c
 func GetMessagesAsync() (*GetMessagesAsyncResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/trade/v1/messages"
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetMessagesAsyncResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/trade/v1/messages"
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetMessagesAsyncResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
-
 
 // https://www.developer.saxo/openapi/referencedocs/trade/v1/messages/markmessageasseen/4e74666015b9d3478088a57d85dcbc60
 func MarkMessageAsSeen(messageid string) ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/trade/v1/messages/seen/{MessageId}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{MessageId}", messageid))
-    resp, err := saxo.GetClient().DoRequest("PUT", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/trade/v1/messages/seen/{MessageId}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{MessageId}", messageid))
+	resp, err := saxo.GetClient().DoRequest("PUT", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
-
 
 // https://www.developer.saxo/openapi/referencedocs/trade/v1/messages/markmessagesasseen/8c647d4c36a23c0f9150522f57dd45f4
 func MarkMessagesAsSeen(params *MarkMessagesAsSeenParams) ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/trade/v1/messages/seen/?MessageIds={MessageIds}"
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("PUT", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/trade/v1/messages/seen/?MessageIds={MessageIds}"
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("PUT", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
 
-type MarkMessagesAsSeenParams struct { 
-    MessageIds string // required 
+type MarkMessagesAsSeenParams struct {
+	MessageIds string // required
 }
 
 // https://www.developer.saxo/openapi/referencedocs/trade/v1/messages/addsubscriptionasync/22ce70f29a57da59087701912c8077d1
 func AddSubscriptionAsyncMessages(params *AddSubscriptionAsyncMessagesParams) (*AddSubscriptionAsyncMessagesResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/trade/v1/messages/subscriptions"
-    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &AddSubscriptionAsyncMessagesResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/trade/v1/messages/subscriptions"
+	resp, err := saxo.GetClient().DoRequest("POST", url, params)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &AddSubscriptionAsyncMessagesResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type AddSubscriptionAsyncMessagesParams struct { 
-    ContextId string // required
-    Format string
-    ReferenceId string // required
-    RefreshRate int64
-    Tag string 
+type AddSubscriptionAsyncMessagesParams struct {
+	ContextId   string // required
+	Format      string
+	ReferenceId string // required
+	RefreshRate int64
+	Tag         string
 }
 
 // https://www.developer.saxo/openapi/referencedocs/trade/v1/messages/deletesubscription/b132a38a8d61746d1d4e347813d9ea79
 func DeleteSubscriptionMessages(contextid string, referenceid string) ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/trade/v1/messages/subscriptions/{ContextId}/{ReferenceId}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{ContextId}", contextid), saxo.RP("{ReferenceId}", referenceid))
-    resp, err := saxo.GetClient().DoRequest("DELETE", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/trade/v1/messages/subscriptions/{ContextId}/{ReferenceId}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{ContextId}", contextid), saxo.RP("{ReferenceId}", referenceid))
+	resp, err := saxo.GetClient().DoRequest("DELETE", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
-
 
 // https://www.developer.saxo/openapi/referencedocs/trade/v1/messages/deletesubscriptions/d7a71b0513d2d1d99f4906e1b133387b
 func DeleteSubscriptionsMessages(contextid string, params *DeleteSubscriptionsMessagesParams) ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/trade/v1/messages/subscriptions/{ContextId}/?Tag={Tag}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{ContextId}", contextid))
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("DELETE", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/trade/v1/messages/subscriptions/{ContextId}/?Tag={Tag}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{ContextId}", contextid))
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("DELETE", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
 
-type DeleteSubscriptionsMessagesParams struct { 
-    
-    Tag string 
+type DeleteSubscriptionsMessagesParams struct {
+	Tag string `url:",omitempty"`
 }

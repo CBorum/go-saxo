@@ -7,38 +7,37 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/ref/v1/algostrategies/getallstrategies/fce5d6b477a3e4d2a1d83e609f02d24f
 func GetAllStrategies(params *GetAllStrategiesParams) (*GetAllStrategiesResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/ref/v1/algostrategies/?$top={$top}&$skip={$skip}"
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetAllStrategiesResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/ref/v1/algostrategies/?$top={$top}&$skip={$skip}"
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetAllStrategiesResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type GetAllStrategiesParams struct { 
-    skip int64
-    top int64 
+type GetAllStrategiesParams struct {
+	Skip int64 `url:",omitempty"`
+	Top  int64 `url:",omitempty"`
 }
 
 // https://www.developer.saxo/openapi/referencedocs/ref/v1/algostrategies/getstrategybyname/f3195d507d54dd21c5504df61bf17863
 func GetStrategyByName(name string) (*GetStrategyByNameResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/ref/v1/algostrategies/{Name}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{Name}", name))
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetStrategyByNameResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/ref/v1/algostrategies/{Name}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{Name}", name))
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetStrategyByNameResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
-

@@ -7,27 +7,24 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/cs/v1/tradingconditions-cost/gettradingconditioncost/665e2b2d64ea678fbf102d40fd82a3ec
 func GetTradingConditionCost(accountkey string, assettype string, uic string, params *GetTradingConditionCostParams) (*GetTradingConditionCostResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/cs/v1/tradingconditions/cost/{AccountKey}/{Uic}/{AssetType}/?Amount={Amount}&FieldGroups={FieldGroups}&Price={Price}&HoldingPeriodInDays={HoldingPeriodInDays}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{AccountKey}", accountkey), saxo.RP("{AssetType}", assettype), saxo.RP("{Uic}", uic))
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetTradingConditionCostResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/cs/v1/tradingconditions/cost/{AccountKey}/{Uic}/{AssetType}/?Amount={Amount}&FieldGroups={FieldGroups}&Price={Price}&HoldingPeriodInDays={HoldingPeriodInDays}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{AccountKey}", accountkey), saxo.RP("{AssetType}", assettype), saxo.RP("{Uic}", uic))
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetTradingConditionCostResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type GetTradingConditionCostParams struct { 
-    
-    Amount float64 // required
-    
-    FieldGroups string
-    HoldingPeriodInDays int64
-    Price float64
-     
+type GetTradingConditionCostParams struct {
+	Amount              float64 // required
+	FieldGroups         string  `url:",omitempty"`
+	HoldingPeriodInDays int64   `url:",omitempty"`
+	Price               float64 `url:",omitempty"`
 }

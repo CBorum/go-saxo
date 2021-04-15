@@ -7,143 +7,137 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/cm/v1/signups/attachfile/d4080612eac8c8aa989c8b2cd0cefe11
 func AttachFilev1(signupid string, params *AttachFilev1Params) ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/attachments/{SignUpId}/?RenewalDate={RenewalDate}&DocumentType={DocumentType}&Title={Title}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{SignUpId}", signupid))
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/attachments/{SignUpId}/?RenewalDate={RenewalDate}&DocumentType={DocumentType}&Title={Title}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{SignUpId}", signupid))
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("POST", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
 
-type AttachFilev1Params struct { 
-    DocumentType string
-    RenewalDate string
-    
-    Title string 
+type AttachFilev1Params struct {
+	DocumentType string `url:",omitempty"`
+	RenewalDate  string `url:",omitempty"`
+	Title        string `url:",omitempty"`
 }
 
 // https://www.developer.saxo/openapi/referencedocs/cm/v1/signups/getsignupoptions/11227f361d27279ec9b7ce63abe47ecb
 func GetSignupOptionsv1() (*GetSignupOptionsResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/options"
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetSignupOptionsResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/options"
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetSignupOptionsResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
-
 
 // https://www.developer.saxo/openapi/referencedocs/cm/v1/signups/signup/e6279475c6da5c61867904c574531d2a
 func SignUpv1(params *SignUpv1Params) (*SignUpResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/?OwnerKey={OwnerKey}"
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &SignUpResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/?OwnerKey={OwnerKey}"
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("POST", url, params)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &SignUpResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type SignUpv1Params struct { 
-    AccountInformation string
-    BankInformation string
-    FinlandData string
-    ItalyData string
-    OnboardingInformation string
-    OwnerKey string
-    PensionData string
-    PersonalInformation string // required
-    ProfileInformation string
-    RegulatoryInformation string // required
-    SingaporeData string
-    SwitzerlandData string 
+type SignUpv1Params struct {
+	AccountInformation    string
+	BankInformation       string
+	FinlandData           string
+	ItalyData             string
+	OnboardingInformation string
+	OwnerKey              string `url:",omitempty"`
+	PensionData           string
+	PersonalInformation   string // required
+	ProfileInformation    string
+	RegulatoryInformation string // required
+	SingaporeData         string
+	SwitzerlandData       string
 }
 
 // https://www.developer.saxo/openapi/referencedocs/cm/v1/signups/getsignupstatus/41a070d0384723da2145a39ccd0bf9e0
 func GetSignUpStatusv1(clientkey string) (*GetSignUpStatusResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/status/{ClientKey}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetSignUpStatusResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/status/{ClientKey}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetSignUpStatusResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
-
 
 // https://www.developer.saxo/openapi/referencedocs/cm/v1/signups/completeapplication/177fa8affca7cd529d28c888c697a5f4
 func CompleteApplicationv1(signupid string, params *CompleteApplicationv1Params) (*CompleteApplicationResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/completeapplication/{SignUpId}/?AwaitAccountCreation={AwaitAccountCreation}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{SignUpId}", signupid))
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("PUT", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &CompleteApplicationResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/completeapplication/{SignUpId}/?AwaitAccountCreation={AwaitAccountCreation}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{SignUpId}", signupid))
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("PUT", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &CompleteApplicationResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type CompleteApplicationv1Params struct { 
-    AwaitAccountCreation bool
-     
+type CompleteApplicationv1Params struct {
+	AwaitAccountCreation bool `url:",omitempty"`
 }
 
 // https://www.developer.saxo/openapi/referencedocs/cm/v1/signups/initiateverification/d19dc3a3d9ad7f366ae2f3f7583c6b99
 func InitiateVerificationv1(clientkey string, params *InitiateVerificationv1Params) (*InitiateVerificationResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/verification/initiate/{ClientKey}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
-    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &InitiateVerificationResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/verification/initiate/{ClientKey}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
+	resp, err := saxo.GetClient().DoRequest("POST", url, params)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &InitiateVerificationResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type InitiateVerificationv1Params struct { 
-    
-    RedirectUrl string // required 
+type InitiateVerificationv1Params struct {
+	RedirectUrl string // required
 }
 
 // https://www.developer.saxo/openapi/referencedocs/cm/v1/signups/generatetypedonboardingpdf/6089ca2f4ae3a1af2d02c693b75ce1c9
 func GenerateTypedOnboardingPDFv1(clientkey string, params *GenerateTypedOnboardingPDFv1Params) ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/onboardingpdf/{ClientKey}/?DocumentType={DocumentType}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/cm/v1/signups/onboardingpdf/{ClientKey}/?DocumentType={DocumentType}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
 
-type GenerateTypedOnboardingPDFv1Params struct { 
-    
-    DocumentType string // required 
+type GenerateTypedOnboardingPDFv1Params struct {
+	DocumentType string // required
 }

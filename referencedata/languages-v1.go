@@ -7,16 +7,15 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/ref/v1/languages/get/f91a16539dd69368540c9216cb519d27
 func GetLanguages() (*GetLanguagesResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/ref/v1/languages"
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetLanguagesResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/ref/v1/languages"
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetLanguagesResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
-

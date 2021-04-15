@@ -7,89 +7,86 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/users/getuser/24acd0f6657d7f2a34f4a37ccad185f7
 func GetUserMe() (*GetUserMeResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/port/v1/users/me"
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetUserMeResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/port/v1/users/me"
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetUserMeResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
-
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/users/getusers/6b4194594e4b90d95179a448eede0cbd
 func GetUsers(params *GetUsersParams) (*GetUsersResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/port/v1/users/?$top={$top}&$skip={$skip}&$inlinecount={$inlinecount}&ClientKey={ClientKey}&IncludeSubUsers={IncludeSubUsers}"
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetUsersResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/port/v1/users/?$top={$top}&$skip={$skip}&$inlinecount={$inlinecount}&ClientKey={ClientKey}&IncludeSubUsers={IncludeSubUsers}"
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetUsersResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type GetUsersParams struct { 
-    inlinecount string
-    skip int64
-    top int64
-    ClientKey string // required
-    IncludeSubUsers bool 
+type GetUsersParams struct {
+	Inlinecount     string `url:",omitempty"`
+	Skip            int64  `url:",omitempty"`
+	Top             int64  `url:",omitempty"`
+	ClientKey       string // required
+	IncludeSubUsers bool   `url:",omitempty"`
 }
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/users/getuser/254eac9c10b25ad7b042379fd2c60b02
 func GetUser(userkey string) (*GetUserResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/port/v1/users/{UserKey}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{UserKey}", userkey))
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetUserResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/port/v1/users/{UserKey}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{UserKey}", userkey))
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetUserResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
-
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/users/updateuserpreferences/a6d4ba6f6359975cdfa2195b28554d73
 func UpdateUserPreferences(params *UpdateUserPreferencesParams) ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/port/v1/users/me"
-    resp, err := saxo.GetClient().DoRequest("PATCH", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/port/v1/users/me"
+	resp, err := saxo.GetClient().DoRequest("PATCH", url, params)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
 
-type UpdateUserPreferencesParams struct { 
-    Culture string
-    Language string
-    TimeZoneId int64 
+type UpdateUserPreferencesParams struct {
+	Culture    string
+	Language   string
+	TimeZoneId int64
 }
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/users/getallcliententitlements/c68178c4aeb8672eae6e08b8b5cc92e6
 func GetAllClientEntitlements() (*GetAllClientEntitlementsResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/port/v1/users/me/entitlements"
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetAllClientEntitlementsResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/port/v1/users/me/entitlements"
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetAllClientEntitlementsResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
-

@@ -7,42 +7,38 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/mkt/v1/instrumentdocument/getrecommendedinstrumentdocumentinformation/2c4d975085f24f29a7ccf2cf240c6af6
 func GetRecommendedInstrumentDocumentInformationv1(assettype string, uic string, params *GetRecommendedInstrumentDocumentInformationv1Params) (*GetRecommendedInstrumentDocumentInformationResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/mkt/v1/instruments/{Uic}/{AssetType}/documents/recommended/?DocumentType={DocumentType}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{AssetType}", assettype), saxo.RP("{Uic}", uic))
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetRecommendedInstrumentDocumentInformationResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/mkt/v1/instruments/{Uic}/{AssetType}/documents/recommended/?DocumentType={DocumentType}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{AssetType}", assettype), saxo.RP("{Uic}", uic))
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetRecommendedInstrumentDocumentInformationResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type GetRecommendedInstrumentDocumentInformationv1Params struct { 
-    
-    DocumentType string // required
-     
+type GetRecommendedInstrumentDocumentInformationv1Params struct {
+	DocumentType string // required
 }
 
 // https://www.developer.saxo/openapi/referencedocs/mkt/v1/instrumentdocument/getdocumentbydocumenttypeandlanguagecode/bb48e9bd37dfafb53ae73d36807c43db
 func GetDocumentByDocumentTypeAndLanguageCodev1(assettype string, uic string, params *GetDocumentByDocumentTypeAndLanguageCodev1Params) ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/mkt/v1/instruments/{Uic}/{AssetType}/documents/pdf/?DocumentType={DocumentType}&LanguageCode={LanguageCode}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{AssetType}", assettype), saxo.RP("{Uic}", uic))
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/mkt/v1/instruments/{Uic}/{AssetType}/documents/pdf/?DocumentType={DocumentType}&LanguageCode={LanguageCode}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{AssetType}", assettype), saxo.RP("{Uic}", uic))
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
 
-type GetDocumentByDocumentTypeAndLanguageCodev1Params struct { 
-    
-    DocumentType string // required
-    LanguageCode string // required
-     
+type GetDocumentByDocumentTypeAndLanguageCodev1Params struct {
+	DocumentType string // required
+	LanguageCode string // required
 }

@@ -7,22 +7,22 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/cs/v2/cashmanagement-wiretransfers/get/d101bb71d038dfb9487f4ede1fa0186b
 func GetWireTransfers(params *GetWireTransfersParams) (*GetWireTransfersResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/cs/v2/cashmanagement/wiretransfers/instructions/?ClientKey={ClientKey}&AccountKey={AccountKey}&CurrencyCode={CurrencyCode}"
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetWireTransfersResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/cs/v2/cashmanagement/wiretransfers/instructions/?ClientKey={ClientKey}&AccountKey={AccountKey}&CurrencyCode={CurrencyCode}"
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetWireTransfersResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type GetWireTransfersParams struct { 
-    AccountKey string // required
-    ClientKey string // required
-    CurrencyCode string // required 
+type GetWireTransfersParams struct {
+	AccountKey   string // required
+	ClientKey    string // required
+	CurrencyCode string // required
 }

@@ -7,20 +7,19 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/cr/v1/historicalreportdata-accountstatement/getasync/60679c07d68bb3dc5767352a81acdb16
 func GetAsyncAccountStatement(clientkey string, params *GetAsyncAccountStatementParams) ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/cr/v1/reports/AccountStatement/{ClientKey}/?FromDate={FromDate}&ToDate={ToDate}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/cr/v1/reports/AccountStatement/{ClientKey}/?FromDate={FromDate}&ToDate={ToDate}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
 
-type GetAsyncAccountStatementParams struct { 
-    AccountGroupKey string
-    AccountKey string
-    
-    FromDate string
-    ToDate string 
+type GetAsyncAccountStatementParams struct {
+	AccountGroupKey string `url:",omitempty"`
+	AccountKey      string `url:",omitempty"`
+	FromDate        string `url:",omitempty"`
+	ToDate          string `url:",omitempty"`
 }

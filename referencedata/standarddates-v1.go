@@ -7,39 +7,37 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/ref/v1/standarddates/getforwardtenordates/f3b91ed5e08e1d663c7a33bf045df567
 func GetForwardTenorDates(uic string, params *GetForwardTenorDatesParams) (*GetForwardTenorDatesResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/ref/v1/standarddates/forwardtenor/{Uic}/?AccountKey={AccountKey}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{Uic}", uic))
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetForwardTenorDatesResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/ref/v1/standarddates/forwardtenor/{Uic}/?AccountKey={AccountKey}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{Uic}", uic))
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetForwardTenorDatesResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type GetForwardTenorDatesParams struct { 
-    AccountKey string
-     
+type GetForwardTenorDatesParams struct {
+	AccountKey string `url:",omitempty"`
 }
 
 // https://www.developer.saxo/openapi/referencedocs/ref/v1/standarddates/getfxoptionexpirydates/be7b3c6935a397693069a0529b2c7490
 func GetFxOptionExpiryDates(uic string) (*GetFxOptionExpiryDatesResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/ref/v1/standarddates/fxoptionexpiry/{Uic}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{Uic}", uic))
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetFxOptionExpiryDatesResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/ref/v1/standarddates/fxoptionexpiry/{Uic}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{Uic}", uic))
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetFxOptionExpiryDatesResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
-

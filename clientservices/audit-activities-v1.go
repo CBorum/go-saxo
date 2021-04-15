@@ -7,28 +7,28 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/cs/v1/audit-activities/get/65af3f977d65b3d98c66d7e86aa3ef8e
 func GetActivities(params *GetActivitiesParams) (*GetActivitiesResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/cs/v1/audit/activities/?$top={$top}&$skiptoken={$skiptoken}&ClientKey={ClientKey}&From={From}&To={To}&LogEntryTypes={LogEntryTypes}&AccountKey={AccountKey}&PostingId={PostingId}&CorrelationKey={CorrelationKey}"
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetActivitiesResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/cs/v1/audit/activities/?$top={$top}&$skiptoken={$skiptoken}&ClientKey={ClientKey}&From={From}&To={To}&LogEntryTypes={LogEntryTypes}&AccountKey={AccountKey}&PostingId={PostingId}&CorrelationKey={CorrelationKey}"
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetActivitiesResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type GetActivitiesParams struct { 
-    skiptoken string
-    top int64
-    AccountKey string
-    ClientKey string // required
-    CorrelationKey string
-    From string
-    LogEntryTypes string
-    PostingId string
-    To string 
+type GetActivitiesParams struct {
+	Skiptoken      string `url:",omitempty"`
+	Top            int64  `url:",omitempty"`
+	AccountKey     string `url:",omitempty"`
+	ClientKey      string // required
+	CorrelationKey string `url:",omitempty"`
+	From           string `url:",omitempty"`
+	LogEntryTypes  string `url:",omitempty"`
+	PostingId      string `url:",omitempty"`
+	To             string `url:",omitempty"`
 }

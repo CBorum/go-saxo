@@ -7,24 +7,24 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/ca/v1/proxyvoting/getproxyvotingeventsasync/fa0a55afb94926ed3fc7d756c07f8fa8
 func GetProxyVotingEventsAsync(params *GetProxyVotingEventsAsyncParams) (*GetProxyVotingEventsAsyncResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/ca/v1/proxyvoting/events/?$top={$top}&$skip={$skip}&ClientKey={ClientKey}&SortType={SortType}&SortColumn={SortColumn}"
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetProxyVotingEventsAsyncResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/ca/v1/proxyvoting/events/?$top={$top}&$skip={$skip}&ClientKey={ClientKey}&SortType={SortType}&SortColumn={SortColumn}"
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetProxyVotingEventsAsyncResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type GetProxyVotingEventsAsyncParams struct { 
-    skip int64
-    top int64
-    ClientKey string // required
-    SortColumn string
-    SortType string 
+type GetProxyVotingEventsAsyncParams struct {
+	Skip       int64  `url:",omitempty"`
+	Top        int64  `url:",omitempty"`
+	ClientKey  string // required
+	SortColumn string `url:",omitempty"`
+	SortType   string `url:",omitempty"`
 }

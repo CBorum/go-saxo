@@ -7,30 +7,29 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/partnerintegration/v1/interactiveidverification/idnowinteractiveverificationcomplete/7e8381ef50e281863d8fa9b1a76b8fb3
 func IdNowInteractiveVerificationComplete(params *IdNowInteractiveVerificationCompleteParams) ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/partnerintegration/v1/InteractiveIdVerification/idnow/complete"
-    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/partnerintegration/v1/InteractiveIdVerification/idnow/complete"
+	resp, err := saxo.GetClient().DoRequest("POST", url, params)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
 
-type IdNowInteractiveVerificationCompleteParams struct { 
-    VerificationStatus string 
+type IdNowInteractiveVerificationCompleteParams struct {
+	VerificationStatus string
 }
 
 // https://www.developer.saxo/openapi/referencedocs/partnerintegration/v1/interactiveidverification/verifyinteractiveverification/409150c2211b11cdcc88e9125cc604d6
 func VerifyInteractiveVerification(correlationid string, params *VerifyInteractiveVerificationParams) ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/partnerintegration/v1/InteractiveIdVerification/verify/{Correlationid}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{Correlationid}", correlationid))
-    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/partnerintegration/v1/InteractiveIdVerification/verify/{Correlationid}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{Correlationid}", correlationid))
+	resp, err := saxo.GetClient().DoRequest("POST", url, params)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
 
-type VerifyInteractiveVerificationParams struct { 
-    
-    RequestBody string 
+type VerifyInteractiveVerificationParams struct {
+	RequestBody string
 }

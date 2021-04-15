@@ -7,83 +7,78 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/at/v3/tradefollowers/gettradefollowers/2bdf75595f80d29308a1a78817af9555
 func GetTradeFollowers() (*GetTradeFollowersResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/at/v3/tradeFollowers/me"
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetTradeFollowersResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/at/v3/tradeFollowers/me"
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetTradeFollowersResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
-
 
 // https://www.developer.saxo/openapi/referencedocs/at/v3/tradefollowers/getsuitabilitystatus/f29fd826000313674d43a8a8f957e646
 func GetSuitabilityStatus(clientkey string) (*GetSuitabilityStatusResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/at/v3/tradeFollowers/{ClientKey}/suitabilitystatus"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetSuitabilityStatusResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/at/v3/tradeFollowers/{ClientKey}/suitabilitystatus"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetSuitabilityStatusResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
-
 
 // https://www.developer.saxo/openapi/referencedocs/at/v3/tradefollowers/putsuitabilitystatus/1cca3a2182825335b94faaa1b204d2eb
 func PutSuitabilityStatus(clientkey string, params *PutSuitabilityStatusParams) ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/at/v3/tradeFollowers/{ClientKey}/suitabilitystatus"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
-    resp, err := saxo.GetClient().DoRequest("PUT", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/at/v3/tradeFollowers/{ClientKey}/suitabilitystatus"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
+	resp, err := saxo.GetClient().DoRequest("PUT", url, params)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
 
-type PutSuitabilityStatusParams struct { 
-    
-    OverallSuitability string // required
-    ProductAreaSuitability string // required 
+type PutSuitabilityStatusParams struct {
+	OverallSuitability     string // required
+	ProductAreaSuitability string // required
 }
 
 // https://www.developer.saxo/openapi/referencedocs/at/v3/tradefollowers/gettermsandconditions/1619ace40f6c5400134a4f37c50021a1
 func GetTermsAndConditions(clientkey string) (*GetTermsAndConditionsResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/at/v3/tradeFollowers/{ClientKey}/termsandconditions"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetTermsAndConditionsResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/at/v3/tradeFollowers/{ClientKey}/termsandconditions"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetTermsAndConditionsResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
-
 
 // https://www.developer.saxo/openapi/referencedocs/at/v3/tradefollowers/putclienttermsandconditions/27384a61ee7bb1390a138982f909ab54
 func PutClientTermsAndConditions(clientkey string, params *PutClientTermsAndConditionsParams) ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/at/v3/tradeFollowers/{ClientKey}/termsandconditions"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
-    resp, err := saxo.GetClient().DoRequest("PUT", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/at/v3/tradeFollowers/{ClientKey}/termsandconditions"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
+	resp, err := saxo.GetClient().DoRequest("PUT", url, params)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
 
-type PutClientTermsAndConditionsParams struct { 
-    Accepted bool // required
-     
+type PutClientTermsAndConditionsParams struct {
+	Accepted bool // required
 }

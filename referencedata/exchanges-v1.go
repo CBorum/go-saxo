@@ -7,38 +7,37 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/ref/v1/exchanges/getallexchanges/ad46a2d6611b9194c5fa84d21287dc7f
 func GetAllExchanges(params *GetAllExchangesParams) (*GetAllExchangesResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/ref/v1/exchanges/?$top={$top}&$skip={$skip}"
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetAllExchangesResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/ref/v1/exchanges/?$top={$top}&$skip={$skip}"
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetAllExchangesResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type GetAllExchangesParams struct { 
-    skip int64
-    top int64 
+type GetAllExchangesParams struct {
+	Skip int64 `url:",omitempty"`
+	Top  int64 `url:",omitempty"`
 }
 
 // https://www.developer.saxo/openapi/referencedocs/ref/v1/exchanges/getexchange/3a329c212a4fbd2320f582aa50d1b772
 func GetExchange(exchangeid string) (*GetExchangeResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/ref/v1/exchanges/{ExchangeId}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{ExchangeId}", exchangeid))
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetExchangeResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/ref/v1/exchanges/{ExchangeId}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{ExchangeId}", exchangeid))
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetExchangeResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
-

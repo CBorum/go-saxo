@@ -7,28 +7,27 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/hist/v3/performance/getperformance/9dd399b9b4d92ce3876ee9e787ded861
 func GetPerformance(clientkey string, params *GetPerformanceParams) (*GetPerformanceResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/hist/v3/perf/{ClientKey}/?AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}&FromDate={FromDate}&ToDate={ToDate}&StandardPeriod={StandardPeriod}&MockDataId={MockDataId}&FieldGroups={FieldGroups}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetPerformanceResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/hist/v3/perf/{ClientKey}/?AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}&FromDate={FromDate}&ToDate={ToDate}&StandardPeriod={StandardPeriod}&MockDataId={MockDataId}&FieldGroups={FieldGroups}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetPerformanceResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type GetPerformanceParams struct { 
-    AccountGroupKey string
-    AccountKey string
-    
-    FieldGroups string
-    FromDate string
-    MockDataId string
-    StandardPeriod string
-    ToDate string 
+type GetPerformanceParams struct {
+	AccountGroupKey string `url:",omitempty"`
+	AccountKey      string `url:",omitempty"`
+	FieldGroups     string `url:",omitempty"`
+	FromDate        string `url:",omitempty"`
+	MockDataId      string `url:",omitempty"`
+	StandardPeriod  string `url:",omitempty"`
+	ToDate          string `url:",omitempty"`
 }

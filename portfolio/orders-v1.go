@@ -7,157 +7,152 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/orders/getopenorder/3024791d13ad168eeb5729c6f65659a3
 func GetOpenOrder(clientkey string, orderid string, params *GetOpenOrderParams) (*GetOpenOrderResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/port/v1/orders/{ClientKey}/{OrderId}/?FieldGroups={FieldGroups}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey), saxo.RP("{OrderId}", orderid))
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetOpenOrderResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/port/v1/orders/{ClientKey}/{OrderId}/?FieldGroups={FieldGroups}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey), saxo.RP("{OrderId}", orderid))
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetOpenOrderResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type GetOpenOrderParams struct { 
-    
-    FieldGroups string
-     
+type GetOpenOrderParams struct {
+	FieldGroups string `url:",omitempty"`
 }
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/orders/getopenorders/cae24349737ea6fef4f0e6d9c477794e
 func GetOpenOrdersMe(params *GetOpenOrdersMeParams) (*GetOpenOrdersMeResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/port/v1/orders/me/?$top={$top}&$skip={$skip}&FieldGroups={FieldGroups}&Status={Status}&MultiLegOrderId={MultiLegOrderId}"
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetOpenOrdersMeResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/port/v1/orders/me/?$top={$top}&$skip={$skip}&FieldGroups={FieldGroups}&Status={Status}&MultiLegOrderId={MultiLegOrderId}"
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetOpenOrdersMeResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type GetOpenOrdersMeParams struct { 
-    skip int64
-    top int64
-    FieldGroups string
-    MultiLegOrderId string
-    Status string 
+type GetOpenOrdersMeParams struct {
+	Skip            int64  `url:",omitempty"`
+	Top             int64  `url:",omitempty"`
+	FieldGroups     string `url:",omitempty"`
+	MultiLegOrderId string `url:",omitempty"`
+	Status          string `url:",omitempty"`
 }
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/orders/getopenorderdetails/4344116e34c37b70b5f7b8394f406934
 func GetOpenOrderDetails(orderid string, params *GetOpenOrderDetailsParams) (*GetOpenOrderDetailsResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/port/v1/orders/{OrderId}/details/?ClientKey={ClientKey}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{OrderId}", orderid))
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetOpenOrderDetailsResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/port/v1/orders/{OrderId}/details/?ClientKey={ClientKey}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{OrderId}", orderid))
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetOpenOrderDetailsResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type GetOpenOrderDetailsParams struct { 
-    AccountGroupKey string
-    AccountKey string
-    ClientKey string // required
-     
+type GetOpenOrderDetailsParams struct {
+	AccountGroupKey string `url:",omitempty"`
+	AccountKey      string `url:",omitempty"`
+	ClientKey       string // required
 }
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/orders/getopenorders/aef7f2c761e8f985b3cf02372d3a21be
 func GetOpenOrders(params *GetOpenOrdersParams) (*GetOpenOrdersResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/port/v1/orders/?$top={$top}&$skip={$skip}&ClientKey={ClientKey}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}&OrderId={OrderId}&Status={Status}&FieldGroups={FieldGroups}&WatchlistId={WatchlistId}"
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetOpenOrdersResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/port/v1/orders/?$top={$top}&$skip={$skip}&ClientKey={ClientKey}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}&OrderId={OrderId}&Status={Status}&FieldGroups={FieldGroups}&WatchlistId={WatchlistId}"
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetOpenOrdersResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type GetOpenOrdersParams struct { 
-    skip int64
-    top int64
-    AccountGroupKey string
-    AccountKey string
-    ClientKey string // required
-    FieldGroups string
-    OrderId string
-    Status string
-    WatchlistId string 
+type GetOpenOrdersParams struct {
+	Skip            int64  `url:",omitempty"`
+	Top             int64  `url:",omitempty"`
+	AccountGroupKey string `url:",omitempty"`
+	AccountKey      string `url:",omitempty"`
+	ClientKey       string // required
+	FieldGroups     string `url:",omitempty"`
+	OrderId         string `url:",omitempty"`
+	Status          string `url:",omitempty"`
+	WatchlistId     string `url:",omitempty"`
 }
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/orders/addactivesubscription/0de7616778e992af51f475849270bc2e
 func AddActiveSubscriptionOrders(params *AddActiveSubscriptionOrdersParams) (*AddActiveSubscriptionOrdersResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/port/v1/orders/subscriptions/?$top={$top}&$skip={$skip}&$skiptoken={$skiptoken}&$inlinecount={$inlinecount}"
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &AddActiveSubscriptionOrdersResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/port/v1/orders/subscriptions/?$top={$top}&$skip={$skip}&$skiptoken={$skiptoken}&$inlinecount={$inlinecount}"
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("POST", url, params)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &AddActiveSubscriptionOrdersResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type AddActiveSubscriptionOrdersParams struct { 
-    inlinecount string
-    skip int64
-    skiptoken string
-    top int64
-    Arguments string // required
-    ContextId string // required
-    Format string
-    ReferenceId string // required
-    RefreshRate int64
-    Tag string 
+type AddActiveSubscriptionOrdersParams struct {
+	Inlinecount string `url:",omitempty"`
+	Skip        int64  `url:",omitempty"`
+	Skiptoken   string `url:",omitempty"`
+	Top         int64  `url:",omitempty"`
+	Arguments   string // required
+	ContextId   string // required
+	Format      string
+	ReferenceId string // required
+	RefreshRate int64
+	Tag         string
 }
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/orders/deletesubscriptions/1ed8d960884aac2fb4b89b8d207d33aa
 func DeleteSubscriptionsOrders(contextid string, params *DeleteSubscriptionsOrdersParams) ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/port/v1/orders/subscriptions/{ContextId}/?Tag={Tag}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{ContextId}", contextid))
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("DELETE", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/port/v1/orders/subscriptions/{ContextId}/?Tag={Tag}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{ContextId}", contextid))
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("DELETE", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
 
-type DeleteSubscriptionsOrdersParams struct { 
-    
-    Tag string 
+type DeleteSubscriptionsOrdersParams struct {
+	Tag string `url:",omitempty"`
 }
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/orders/deletesubscription/27113d973d511604762399997db5b9b7
 func DeleteSubscriptionOrders(contextid string, referenceid string) ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/port/v1/orders/subscriptions/{ContextId}/{ReferenceId}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{ContextId}", contextid), saxo.RP("{ReferenceId}", referenceid))
-    resp, err := saxo.GetClient().DoRequest("DELETE", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/port/v1/orders/subscriptions/{ContextId}/{ReferenceId}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{ContextId}", contextid), saxo.RP("{ReferenceId}", referenceid))
+	resp, err := saxo.GetClient().DoRequest("DELETE", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
-

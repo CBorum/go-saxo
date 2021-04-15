@@ -7,16 +7,16 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/cm/v1/users/resetpassword/9f8c2cf85499f04f15adf43e76bf073a
 func ResetPassword(params *ResetPasswordParams) ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/cm/v1/users/resetpasswordrequest"
-    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/cm/v1/users/resetpasswordrequest"
+	resp, err := saxo.GetClient().DoRequest("POST", url, params)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
 
-type ResetPasswordParams struct { 
-    Email string // required
-    Language string
-    UserId string // required 
+type ResetPasswordParams struct {
+	Email    string // required
+	Language string
+	UserId   string // required
 }

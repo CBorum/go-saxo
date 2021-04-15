@@ -7,16 +7,15 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/developer/v1/featureflags/getflags/e98a366b4bf75fac7af4bb9109357af1
 func GetFlags() (*GetFlagsResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/developer/featureflags"
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetFlagsResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/developer/featureflags"
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetFlagsResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
-

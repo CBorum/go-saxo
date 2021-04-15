@@ -7,16 +7,15 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/ref/v1/cultures/getcultures/eb75bb169352bb712a2d8c1bde115ecc
 func GetCultures() (*GetCulturesResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/ref/v1/cultures"
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetCulturesResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/ref/v1/cultures"
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetCulturesResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
-

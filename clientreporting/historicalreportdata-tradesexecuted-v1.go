@@ -7,20 +7,19 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/cr/v1/historicalreportdata-tradesexecuted/getasync/b2a76e81cbe2daf0a95119118c2e701e
 func GetAsyncTradesExecuted(clientkey string, params *GetAsyncTradesExecutedParams) ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/cr/v1/reports/TradesExecuted/{ClientKey}/?FromDate={FromDate}&ToDate={ToDate}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/cr/v1/reports/TradesExecuted/{ClientKey}/?FromDate={FromDate}&ToDate={ToDate}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey))
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
 
-type GetAsyncTradesExecutedParams struct { 
-    AccountGroupKey string
-    AccountKey string
-    
-    FromDate string
-    ToDate string 
+type GetAsyncTradesExecutedParams struct {
+	AccountGroupKey string `url:",omitempty"`
+	AccountKey      string `url:",omitempty"`
+	FromDate        string `url:",omitempty"`
+	ToDate          string `url:",omitempty"`
 }

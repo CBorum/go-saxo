@@ -7,23 +7,23 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/atr/v1/partner-prefunding/prebookfunddeposit/f87719a93264749430d6eb7a234aa3af
 func PrebookFundDeposit(params *PrebookFundDepositParams) ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/atr/v1/partner/prebookedfunds"
-    resp, err := saxo.GetClient().DoRequest("POST", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/atr/v1/partner/prebookedfunds"
+	resp, err := saxo.GetClient().DoRequest("POST", url, params)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
 
-type PrebookFundDepositParams struct { 
-    AccountKey string // required
-    Amount float64 // required
-    BIC string // required
-    ClientKey string // required
-    ClientName string // required
-    Currency string // required
-    ExpectedValueDate string // required
-    ExternalReference string // required
-    Iban string // required
-    RemitterAccount string // required 
+type PrebookFundDepositParams struct {
+	AccountKey        string  // required
+	Amount            float64 // required
+	BIC               string  // required
+	ClientKey         string  // required
+	ClientName        string  // required
+	Currency          string  // required
+	ExpectedValueDate string  // required
+	ExternalReference string  // required
+	Iban              string  // required
+	RemitterAccount   string  // required
 }

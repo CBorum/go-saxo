@@ -7,16 +7,15 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/root/v1/user/userinfo/a5a7f20c716323d335335dee22b637e7
 func UserInfo() (*UserInfoResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/root/v1/user"
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &UserInfoResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/root/v1/user"
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &UserInfoResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
-

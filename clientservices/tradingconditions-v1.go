@@ -7,24 +7,21 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/cs/v1/tradingconditions/getforinstrument/f5c6f7adfb6d1230ea9cb95b801ed806
 func GetForInstrument(accountkey string, assettype string, uic string, params *GetForInstrumentParams) (*GetForInstrumentResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/cs/v1/tradingconditions/instrument/{AccountKey}/{Uic}/{AssetType}/?FieldGroups={FieldGroups}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{AccountKey}", accountkey), saxo.RP("{AssetType}", assettype), saxo.RP("{Uic}", uic))
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetForInstrumentResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/cs/v1/tradingconditions/instrument/{AccountKey}/{Uic}/{AssetType}/?FieldGroups={FieldGroups}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{AccountKey}", accountkey), saxo.RP("{AssetType}", assettype), saxo.RP("{Uic}", uic))
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetForInstrumentResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type GetForInstrumentParams struct { 
-    
-    
-    FieldGroups string
-     
+type GetForInstrumentParams struct {
+	FieldGroups string `url:",omitempty"`
 }

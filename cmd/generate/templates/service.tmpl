@@ -18,7 +18,7 @@ func {{ .Key }}{{if $includeApiVersion}}{{ $apiVersion }}{{ end }}({{ getFuncPar
     {{- if hasQueryParams .Parameters }}
     url = saxo.PrepareUrlParams(url, params)
     {{- end }}
-    resp, err := saxo.GetClient().DoRequest("{{ .Httpmethod }}", url, nil) {{/* TODO sub query params, do json body */}}
+    resp, err := saxo.GetClient().DoRequest("{{ .Httpmethod }}", url, {{ if hasPostParams .Parameters }}params{{ else }}nil{{ end }})
     if err != nil {
         return nil, err
     }
@@ -36,8 +36,8 @@ func {{ .Key }}{{if $includeApiVersion}}{{ $apiVersion }}{{ end }}({{ getFuncPar
 }
 
 {{ if hasNonRouteParameters .Parameters -}}
-type {{ .Key -}}{{if $includeApiVersion}}{{ $apiVersion }}{{end}}Params struct { {{ range .Parameters }}
-    {{ if isNonRoute .Origin }}{{ sanitize .Name }} {{ getParamType .Datatype }}{{ if .Isrequired }} // required{{- end }}{{ end -}} 
+type {{ .Key -}}{{if $includeApiVersion}}{{ $apiVersion }}{{end}}Params struct { {{ range (getNonRouteParams .Parameters) }}
+    {{ sanitize .Name | title }} {{ getParamType .Datatype }}{{ if .Isrequired }} // required{{- else if eq .Origin "Query-String" }} `url:",omitempty"`{{ end }}
 {{- end }} 
 }
 {{ end }}

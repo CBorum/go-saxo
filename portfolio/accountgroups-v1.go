@@ -7,85 +7,83 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/accountgroups/getaccountgroup/052ea6c89788fa97642457e08d63ba7f
 func GetAccountGroup(accountgroupkey string, params *GetAccountGroupParams) (*GetAccountGroupResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/port/v1/accountgroups/{AccountGroupKey}/?ClientKey={ClientKey}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{AccountGroupKey}", accountgroupkey))
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetAccountGroupResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/port/v1/accountgroups/{AccountGroupKey}/?ClientKey={ClientKey}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{AccountGroupKey}", accountgroupkey))
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetAccountGroupResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type GetAccountGroupParams struct { 
-    
-    ClientKey string // required 
+type GetAccountGroupParams struct {
+	ClientKey string // required
 }
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/accountgroups/getaccountgroupsforloggedinuser/9ce455f6be24a5398da000b453611214
 func GetAccountGroupsForLoggedInUser(params *GetAccountGroupsForLoggedInUserParams) (*GetAccountGroupsForLoggedInUserResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/port/v1/accountgroups/me/?$top={$top}&$skip={$skip}&$inlinecount={$inlinecount}"
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetAccountGroupsForLoggedInUserResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/port/v1/accountgroups/me/?$top={$top}&$skip={$skip}&$inlinecount={$inlinecount}"
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetAccountGroupsForLoggedInUserResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type GetAccountGroupsForLoggedInUserParams struct { 
-    inlinecount string
-    skip int64
-    top int64 
+type GetAccountGroupsForLoggedInUserParams struct {
+	Inlinecount string `url:",omitempty"`
+	Skip        int64  `url:",omitempty"`
+	Top         int64  `url:",omitempty"`
 }
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/accountgroups/getaccountgroups/c597d192d53a83c7090d806242eb4902
 func GetAccountGroups(params *GetAccountGroupsParams) (*GetAccountGroupsResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/port/v1/accountgroups/?$top={$top}&$skip={$skip}&$inlinecount={$inlinecount}&ClientKey={ClientKey}"
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetAccountGroupsResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/port/v1/accountgroups/?$top={$top}&$skip={$skip}&$inlinecount={$inlinecount}&ClientKey={ClientKey}"
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetAccountGroupsResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type GetAccountGroupsParams struct { 
-    inlinecount string
-    skip int64
-    top int64
-    ClientKey string // required 
+type GetAccountGroupsParams struct {
+	Inlinecount string `url:",omitempty"`
+	Skip        int64  `url:",omitempty"`
+	Top         int64  `url:",omitempty"`
+	ClientKey   string // required
 }
 
 // https://www.developer.saxo/openapi/referencedocs/port/v1/accountgroups/updateaccountgroup/9ffe50fd5e042cd8f557983d370bd3ac
 func UpdateAccountGroup(accountgroupkey string, params *UpdateAccountGroupParams) ([]byte, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/port/v1/accountgroups/{AccountGroupKey}/?ClientKey={ClientKey}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{AccountGroupKey}", accountgroupkey))
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("PATCH", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    return resp.Bytes(), nil 
+	url := "https://gateway.saxobank.com/sim/openapi/port/v1/accountgroups/{AccountGroupKey}/?ClientKey={ClientKey}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{AccountGroupKey}", accountgroupkey))
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("PATCH", url, params)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
 }
 
-type UpdateAccountGroupParams struct { 
-    
-    AccountValueProtectionLimit float64
-    ClientKey string // required 
+type UpdateAccountGroupParams struct {
+	AccountValueProtectionLimit float64
+	ClientKey                   string // required
 }

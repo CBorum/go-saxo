@@ -7,27 +7,24 @@ import (
 
 // https://www.developer.saxo/openapi/referencedocs/cs/v1/historicalreportdata-closedpositions/get/9fe036fb16df327459bc4cbfb7359cb0
 func GetClosedPositions(clientkey string, fromdate string, todate string, params *GetClosedPositionsParams) (*GetClosedPositionsResponse, error) {
-    url := "https://gateway.saxobank.com/sim/openapi/cs/v1/reports/closedPositions/{ClientKey}/{FromDate}/{ToDate}/?$top={$top}&$skip={$skip}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}"
-    url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey), saxo.RP("{FromDate}", fromdate), saxo.RP("{ToDate}", todate))
-    url = saxo.PrepareUrlParams(url, params)
-    resp, err := saxo.GetClient().DoRequest("GET", url, nil) 
-    if err != nil {
-        return nil, err
-    }
-    respJson := &GetClosedPositionsResponse{}
-    err = resp.ToJSON(respJson)
-    if err != nil {
-        return nil, err
-    }
-    return respJson, nil
+	url := "https://gateway.saxobank.com/sim/openapi/cs/v1/reports/closedPositions/{ClientKey}/{FromDate}/{ToDate}/?$top={$top}&$skip={$skip}&AccountGroupKey={AccountGroupKey}&AccountKey={AccountKey}"
+	url = saxo.PrepareUrlRoute(url, saxo.RP("{ClientKey}", clientkey), saxo.RP("{FromDate}", fromdate), saxo.RP("{ToDate}", todate))
+	url = saxo.PrepareUrlParams(url, params)
+	resp, err := saxo.GetClient().DoRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	respJson := &GetClosedPositionsResponse{}
+	err = resp.ToJSON(respJson)
+	if err != nil {
+		return nil, err
+	}
+	return respJson, nil
 }
 
-type GetClosedPositionsParams struct { 
-    skip int64
-    top int64
-    AccountGroupKey string
-    AccountKey string
-    
-    
-     
+type GetClosedPositionsParams struct {
+	Skip            int64  `url:",omitempty"`
+	Top             int64  `url:",omitempty"`
+	AccountGroupKey string `url:",omitempty"`
+	AccountKey      string `url:",omitempty"`
 }
