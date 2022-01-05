@@ -1,7 +1,4 @@
-# TODO 
-- desc 
-- optional params
-- json body
+**Project abandoned**
 
 # Install
 ```
